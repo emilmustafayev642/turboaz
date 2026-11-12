@@ -1,0 +1,87 @@
+
+.verify-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #f5f6f8;
+}
+
+.verify-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 32px;
+    background: #fff;
+    border: 1px solid #e8e9ed;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(25, 31, 45, 0.08);
+}
+
+.verify-card h1 {
+    margin-bottom: 10px;
+    color: #1a1a1a;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.verify-card p {
+    color: #697386;
+}
+
+.verify-card label {
+    display: block;
+    margin-bottom: 8px;
+    color: #252a34;
+    font-weight: 600;
+}
+
+.verify-card input[name="code"] {
+    width: 100%;
+    height: 48px;
+    margin-bottom: 18px;
+    padding: 0 14px;
+    border: 1px solid #d9dde5;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    letter-spacing: 0.25em;
+}
+
+.verify-card input[name="code"]:focus {
+    border-color: #ca1016;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(202, 16, 22, 0.12);
+}
+
+.verify-card button {
+    width: 100%;
+    min-height: 46px;
+    margin-bottom: 10px;
+    border: 1px solid #ca1016;
+    border-radius: 8px;
+    background: #ca1016;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.verify-card button:hover {
+    border-color: #ad0d12;
+    background: #ad0d12;
+}
+
+.verify-card .resend-button {
+    border-color: #d9dde5;
+    background: #fff;
+    color: #252a34;
+}
+
+.verify-card .resend-button:hover {
+    background: #f5f6f8;
+}
+
+@media (max-width: 480px) {
+    .verify-card {
+        padding: 24px;
+    }
+}

@@ -1,0 +1,253 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'image/favicon.svg' %}?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'image/favicon.png' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/elan.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="body">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="{% url 'home' %}" aria-label="APEX home">
+            <img class="navbar-logo" src="{% static 'image/APEX — Automotive logo.svg' %}" alt="APEX">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           
+        </div>
+    </nav>
+
+
+
+
+    <div class="div1">
+
+        <form method="POST" enctype="multipart/form-data" novalidate>
+
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="listing-form-errors" role="alert">
+            <strong>Elan göndərilmədi. Zəhmət olmasa bu məlumatları yoxlayın:</strong>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {{ form.car_model }}
+        {{ form.car_model.errors }}
+        {{ form.year }}
+        {{ form.year.errors }}
+        {{ form.non_field_errors }}
+
+
+        <div class="form-heading">
+            <h1 class="h1">Yeni elan</h1>
+            <button type="button" id="reset-form-btn" class="reset-form-btn">Sıfırla</button>
+        </div>
+
+        <div class="category-selector">
+            <div class="category-card">
+                <input type="radio" name="vehicle-type" id="type-minik" value="minik" {% if selected_vehicle_type == 'minik' %}checked{% endif %}>
+                <label for="type-minik">
+                    <i class="fa-solid fa-car-side"></i>
+                    <span>Minik</span>
+                </label>
+            </div>
+
+            <div class="category-card">
+                <input type="radio" name="vehicle-type" id="type-commercial" value="kommersiya" {% if selected_vehicle_type == 'kommersiya' %}checked{% endif %}>
+                <label for="type-commercial">
+                    <i class="fa-solid fa-truck"></i>
+                    <span>Kommersiya</span>
+                </label>
+            </div>
+
+            <div class="category-card">
+                <input type="radio" name="vehicle-type" id="type-moto" value="moto" {% if selected_vehicle_type == 'moto' %}checked{% endif %}>
+                <label for="type-moto">
+                    <i class="fa-solid fa-motorcycle"></i>
+                    <span>Moto</span>
+                </label>
+            </div>
+        </div>
+
+        
+
+        <div class="custom-input-box" id="brand-input-box">
+            <label class="input-label" for="selected-brand-input">Marka *</label>
+            <div class="input-field-wrapper">
+                <input type="text" id="selected-brand-input" class="selected-input" placeholder="Marka seçin" readonly>
+                <button type="button" id="clear-brand-btn" class="clear-btn" aria-label="Markanı təmizlə" hidden>&times;</button>
+            </div>
+        </div>
+
+        <div class="custom-input-box model-box" id="model-input-box" hidden>
+            <label class="input-label" for="selected-model-input">Model *</label>
+            <div class="input-field-wrapper">
+                <input type="text" id="selected-model-input" class="selected-input" placeholder="Model seçin" readonly>
+            </div>
+        </div>
+
+        <div id="brands-section" class="selection-section">
+            <span class="section-title">Markalar</span>
+            <div id="popular-brands-grid" class="selection-grid"></div>
+        </div>
+
+        <div id="models-section" class="selection-section model-section" hidden>
+            <span class="section-title">Modellər</span>
+            <div id="models-grid" class="selection-grid"></div>
+        </div>
+
+        <div id="year-section" class="selection-section year-section">
+            <span class="section-title">Buraxilis ili</span>
+            <div id="year-grid" class="selection-grid"></div>
+        </div>
+
+
+        <div class="listing-field">
+            {{ form.condition.label_tag }}
+            {{ form.condition }}
+            {{ form.condition.errors }}
+        </div>
+
+        <div class="listing-field">
+            {{ form.body_type.label_tag }}
+            {{ form.body_type }}
+            <p id="body-type-help" role="status" aria-live="polite"></p>
+            {{ form.body_type.errors }}
+        </div>
+
+        <!-- burani eli komek eledi -->
+
+        <!-- generationda ancaq secilen modeller gosterilecek -->
+        <div class="listing-field" id="elan-generation-wrapper" style="grid-column: 1 / -1; display: none;">
+            <label class="font-weight-bold mb-2">Nəsil (Pokoleniye):</label>
+            <div class="generation-cards-grid" id="elan-generations-grid">
+                {% for gen in generations %}
+                    <label class="gen-card" data-model-id="{{ gen.car_model.id }}" data-model-name="{{ gen.car_model.name|lower }}" style="display: none;">
+                        <input type="radio" name="generation" value="{{ gen.id }}"
+                            {% if form.generation.value|stringformat:"s" == gen.id|stringformat:"s" %}checked{% endif %}>
+                        <div class="gen-card-overlay">
+                            <span class="gen-radio-circle"></span>
+                            <span class="gen-card-title">{{ gen.name }}</span>
+                        </div>
+                        {% if gen.image %}
+                            <img src="{{ gen.image.url }}" alt="{{ gen.name }}">
+                        {% endif %}
+                    </label>
+                {% endfor %}
+            </div>
+            <p id="no-generation-msg" class="text-muted small mt-1" style="display: none;">
+                Bu model üçün nəsil yoxdur.
+            </p>
+            {{ form.generation.errors }}
+        </div>
+
+        <div class="listing-field">
+            {{ form.fuel_type.label_tag }}
+            {{ form.fuel_type }}
+            {{ form.fuel_type.errors }}
+        </div>
+
+        <div class="listing-field">
+            {{ form.price.label_tag }}
+            {{ form.price }}
+            {{ form.price.errors }}
+        </div>
+
+        <div class="parts-condition-box">
+            <label class="parts-condition-title">Detalların vəziyyəti</label>
+            
+            <div class="parts-condition-options">
+                <label class="parts-checkbox-label">
+                    <input type="checkbox" name="is_damaged" class="parts-checkbox-input">
+                    <span>Vuruğu var</span>
+                </label>
+
+                <label class="parts-checkbox-label">
+                    <input type="checkbox" name="is_repainted" class="parts-checkbox-input">
+                    <span>Rənglənib</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="listing-field">
+            {{ form.mileage.label_tag }}
+            {{ form.mileage }}
+            {{ form.mileage.errors }}
+        </div>
+
+        <div class="listing-field">
+            {{ form.city.label_tag }}
+            {{ form.city }}
+            {{ form.city.errors }}
+        </div>
+
+        
+
+        <div class="listing-field">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {{ form.description.errors }}
+        </div>
+
+        <div class="listing-field">
+            <label for="{{ form.photos.id_for_label }}">Photos (at least 3)</label>
+            {{ form.photos }}
+            {{ form.photos.errors }}
+        </div>
+
+        <div class="listing-field">
+            {{ form.phone_number.label_tag }}
+            {{ form.phone_number }}
+            {{ form.phone_number.errors }}
+        </div>
+
+        
+
+        <button style="margin-top: 10px;" class="all_button" type="submit">Elani yerlesdir</button>
+
+        </form>
+
+    </div>
+
+    {{ models_by_brand|json_script:"models-by-brand-data" }}
+    {{ years|json_script:"years-data" }}
+    {{ brand_types|json_script:"brand-types-data" }}
+    {{ body_types_by_model|json_script:"body-types-by-model-data" }}
+    {{ selected_year|json_script:"selected-year-data" }}
+    <script src="{% static 'js/elan.js' %}"></script>
+
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>  
+
+</body>
+</html>

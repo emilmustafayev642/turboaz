@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex | Compare</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="{% static 'image/favicon.svg' %}?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'image/favicon.png' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/compare.css' %}">
+    
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img class="navbar-logo" src="{% static 'image/APEX — Automotive logo.svg' %}" alt="APEX">
+        </a>
+    </nav>
+
+    <div class="compare-container">
+        <a href="{% url 'home' %}" class="back">← Ana səhifəyə qayıt</a>
+        <h2 class="mb-4 font-weight-bold">Avtomobillərin müqayisəsi</h2>
+
+        {% if listings %}
+            <div class="table-responsive compare-table">
+                <table class="table table-bordered mb-0">
+                    <!-- Картинки и названия -->
+                    <tr>
+                        <td class="spec-name">Model</td>
+                        {% for listing in listings %}
+                            <td>
+                                <img src="{{ listing.image.url }}" class="compare-header-img" alt="{{ listing }}">
+                                <h5 class="font-weight-bold mb-1">
+                                    <a href="{% url 'detail' listing.id %}" class="text-dark">
+                                        {{ listing.car_model.brand.name }} {{ listing.car_model.name }}
+                                    </a>
+                                </h5>
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Цена -->
+                    <tr>
+                        <td class="spec-name">Qiymət</td>
+                        {% for listing in listings %}
+                            <td><div class="compare-price">{{ listing.price }} AZN</div></td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Год -->
+                    <tr>
+                        <td class="spec-name">Buraxılış ili</td>
+                        {% for listing in listings %}
+                            <td>{{ listing.year }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Город -->
+                    <tr>
+                        <td class="spec-name">Şəhər</td>
+                        {% for listing in listings %}
+                            <td>{{ listing.city }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Пробег -->
+                    <tr>
+                        <td class="spec-name">Yürüş</td>
+                        {% for listing in listings %}
+                            <td>{{ listing.mileage }} km</td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Тип кузова -->
+                    <tr>
+                        <td class="spec-name">Ban növü</td>
+                        {% for listing in listings %}
+                            <td>{{ listing.get_body_type_display }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Состояние -->
+                    <tr>
+                        <td class="spec-name">Vəziyyəti</td>
+                        {% for listing in listings %}
+                            <td>{{ listing.get_condition_display }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning text-center py-5">
+                <h4>Müqayisə üçün heç bir avtomobil seçilməyib.</h4>
+                <p class="text-muted">Elanların ətraflı səhifəsindən "Müqayisə et" düyməsini basın.</p>
+                <a href="{% url 'home' %}" class="btn btn-apex mt-3">Elanlara bax</a>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>  
+
+</body>
+</html>

@@ -1,0 +1,525 @@
+
+.navbar-logo {
+    display: block;
+    width: 130px;
+    height: auto;
+}
+
+.filter-panel {
+    padding: 30px 14px 40px;
+    background: #dde2e8;
+
+}
+
+.filter-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    gap: 12px;
+    margin: 0 auto;
+}
+
+.filter-controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    
+}
+
+.all_button {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    padding: 10px 20px;
+    background-color: #B80D13;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: end;
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.all-button-wrapper {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-box {
+    position: relative;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.52);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    font-size: 0.95rem;
+    color: #8c96a4;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+
+
+.filter-box span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filter-box i {
+    font-size: 0.8rem;
+    opacity: .75;
+    margin-left: 8px;
+}
+
+.filter-box select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    color: transparent;
+    font-size: 0;
+}
+
+.filter-box.price-range-box {
+    padding: 0;
+    display: flex;
+    overflow: hidden;
+}
+
+.filter-input {
+    width: 50%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    padding: 0px 12px;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    outline: none;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.filter-input::placeholder {
+    color: #8c96a4;
+}
+
+.filter-input.border-left {
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.status-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.52);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.status-option {
+    position: relative;
+}
+
+.status-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.status-option label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 8px;
+    margin-bottom: 0;
+    cursor: pointer;
+    color: #8c96a4;
+    background: transparent;
+    transition: all 0.25s ease;
+    user-select: none;
+    transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s ease, box-shadow 0.25s ease;
+    user-select: none;
+    font-weight: 500;
+}
+
+.status-option label:hover {
+    color: #1a1a1a;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.status-option label:active {
+    transform: translateY(0.96px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.status-option input:checked + label {
+    background: #d81d1d;
+    color: #fff;
+    transition: all 0.25s ease;
+}
+
+#hard-reset-btn {
+    grid-column: auto !important; /* Убираем растягивание на всю сетку */
+    width: auto !important;
+    flex: 0 0 auto !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #64748b !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#hard-reset-btn:hover {
+    background: #e2e8f0 !important;
+    color: #334155 !important;
+}
+
+/* generation stil verirke */
+
+.generation-cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+/* nesile style veririk */
+.feature-generation-highlight {
+    border: 2px solid #ef4444 !important;
+    border-radius: 14px !important;     
+    background-color: #fff1f2 !important;   
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;                      
+    grid-column: 1 / -1 !important;       
+    width: 320px !important;             
+    margin: 4px auto 0 auto !important;       
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+    transition: all 0.2s ease;
+}
+
+.feature-generation-highlight:hover {
+    border-color: #dc2626 !important;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.25);
+}
+
+.feature-generation-highlight span,
+.feature-generation-highlight i {
+    float: none !important;
+    margin: 0 !important;
+}
+
+.gen-card {
+    position: relative;
+    width: 220px;
+    height: 145px;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+    background: #1e293b;
+    margin: 0;
+}
+
+.gen-card:hover {
+    transform: translateY(-2px);
+}
+
+
+.gen-card input[type="radio"] {
+    display: none;
+}
+
+
+.gen-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.gen-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%);
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+/* Кружок радио-кнопки */
+.gen-radio-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
+
+.gen-radio-circle::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.15s ease;
+}
+
+
+.gen-card-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.25;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+
+.gen-card:has(input[type="radio"]:checked) {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+.gen-card input[type="radio"]:checked + .gen-card-overlay .gen-radio-circle {
+    background: #ffffff;
+    border-color: #ffffff;
+}
+
+.gen-card input[type="radio"]:checked + .gen-card-overlay .gen-radio-circle::after {
+    background: #3b82f6;
+}
+
+
+.gen-dropdown-wrapper {
+    position: relative;
+}
+
+.gen-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 999;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+    border: 1px solid #e2e8f0;
+    width: max-content;
+    max-width: 720px;
+}
+
+.gen-dropdown-menu.show {
+    display: block;
+}
+
+
+/* car sectionuna gore cardla rburda  */
+
+
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+.card a {
+    display: block;
+    overflow: hidden;
+}
+
+.card-img-top {
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+
+.card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.listing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    width: 100%; /* Обязательно на всю ширину экрана! */
+    max-width: 1400px; /* Чтобы на огромных мониторах не растягивалось слишком сильно */
+    margin: 0 auto; /* Центрируем всю сетку */
+}
+
+.card {
+    position: relative; /* Здесь мы добавили relative для нашего желтого пина со звездой! */
+    width: 100% !important; /* Убираем фиксированные 18rem от Bootstrap */
+    border: none !important;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    margin-left: 0 !important; /* Убираем старый отступ слева, если он мешал */
+}
+
+.listing-card-link,
+.listing-card-link:hover,
+.listing-card-link:focus {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.listing-grid .card {
+    width: 100%;
+    height: 100%;
+    margin-left: 0;
+}
+
+.card-title {
+    font-weight: 800;
+    color: #1a1a1a;
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+}
+
+.card-pin-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+}
+
+.card-text.cars {
+    background-color: #f1f3f5;
+    color: #495057;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    display: inline-block;
+    align-self: flex-start;
+    margin-bottom: 24px;
+}
+
+
+.card-body p {
+    margin-top: auto; 
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #adb5bd !important; 
+}
+
+.h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #1a1a1a;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+}
+
+.auth-buttons form {
+    margin: 0;
+}
+
+.btn-apex {
+    background-color: #ca1016 !important; 
+    color: #ffffff !important;            
+    border: 1px solid #ca1016 !important;
+    font-weight: 600;                     
+    padding: 0.5rem 1.2rem;             
+    border-radius: 8px !important;      
+    transition: all 0.3s ease-in-out !important;
+    box-shadow: 0 2px 4px rgba(202, 16, 22, 0.15); 
+}
+
+
+.btn-apex:hover {
+    background-color: #b00e13 !important;
+    border-color: #b00e13 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);         
+    box-shadow: 0 4px 8px rgba(202, 16, 22, 0.3); 
+}
+
+
+.btn-apex:active {
+    transform: translateY(1px);           
+    box-shadow: 0 1px 2px rgba(202, 16, 22, 0.2);
+}
+
+.btn-apex-outline {
+    background-color: #ffffff !important;
+    color: #ca1016 !important;
+    border: 1px solid #ca1016 !important;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px !important;
+    transition: all 0.3s ease-in-out !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-apex-outline:hover {
+    background-color: #ca1016 !important;
+    border-color: #ca1016 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(202, 16, 22, 0.2);
+}
+
+.btn-apex-outline:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(202, 16, 22, 0.1);
+}

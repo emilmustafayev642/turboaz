@@ -1,0 +1,115 @@
+.navbar-logo {
+    display: block;
+    width: 130px;
+    height: auto;
+    margin-left: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    object-fit: contain;
+}
+
+.h1 {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin-top: 80px;
+}
+
+
+/* SIGN IN STARTS HERE.Aykhan completely forgot, that he loves bobrovs */
+
+.login-intro {
+    color: #697386;
+    margin-bottom: 28px;
+}
+
+.login-form {
+    max-width: 460px;
+    padding: 28px;
+    background: #fff;
+    border: 1px solid #e8e9ed;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(25, 31, 45, 0.08);
+
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #252a34;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.login-form .form-control {
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #d9dde5;
+    border-radius: 8px;
+    color: #252a34;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.login-form .form-control::placeholder {
+    color: #a0a7b3;
+}
+
+.login-form .form-control:focus {
+    border-color: #ca1016;
+    box-shadow: 0 0 0 3px rgba(202, 16, 22, 0.12);
+}
+
+.login-submit {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid #ca1016;
+    border-radius: 8px;
+    background: #ca1016;
+    color: #fff;
+    font-weight: 700;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.login-submit:hover,
+
+.login-submit:focus {
+    background: #ad0d12;
+    border-color: #ad0d12;
+    color: #fff;
+}
+
+.login-submit:hover {
+    transform: translateY(-1px);
+}
+
+.login-image-column {
+    padding: 0;
+}
+
+@media (min-width: 768px) {
+    .login-form-column {
+        transform: translateY(-135px);
+    }
+}
+
+/* AND ENDS HERE */
+
+.login-car-image {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 150px);
+    min-height: 420px;
+    object-fit: contain;
+    object-position: center;
+    opacity: 1;
+    transition: opacity 350ms ease-in-out;
+}
+
