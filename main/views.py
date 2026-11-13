@@ -99,6 +99,7 @@ def home(request):
     })
     
 
+   
 
 
 def login_view(request):
@@ -427,21 +428,6 @@ def edit_listing_view(request, listing_id):
         'years': list(Year.objects.order_by('-year').values_list('year', flat=True)),
     }
     return render(request, 'elan.html', context) # eyni elan html formasini burda istid edirik nolar kod isle
-
-
-@login_required(login_url='login')
-@require_POST
-def delete_listing_view(request, listing_id):
-    listing = get_object_or_404(Listing, pk=listing_id)
-
-    if listing.owner != request.user:
-        messages.error(request, 'Bu elanı silməyə icazəniz yoxdur.')
-        return redirect('detail', listing_id=listing.id)
-
-    listing.delete()
-    messages.success(request, 'Elan uğurla silindi.')
-    return redirect('home')
-
 
 @login_required(login_url='login')
 def start_or_open_chat(request, listing_id):

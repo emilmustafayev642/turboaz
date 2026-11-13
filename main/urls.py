@@ -15,7 +15,6 @@ urlpatterns = [
     path('listing/<int:listing_id>/compare/', views.toggle_compare_view, name='toggle_compare'),
     path('compare/', views.compare_view, name='compare'),
     path('listing/<int:listing_id>/edit/', views.edit_listing_view, name='edit_listing'),
-    path('listing/<int:listing_id>/delete/', views.delete_listing_view, name='delete_listing'),
     path('listing/<int:listing_id>/chat/', views.start_or_open_chat, name='start_chat'),
     path('chat/<int:conversation_id>/', views.chat_room_view, name='chat_room'),
     path('chat/', views.chat_room_view, name='chat_inbox'),

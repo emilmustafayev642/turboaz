@@ -80,7 +80,7 @@ class ListingForm(forms.ModelForm):
             'phone_number',
             'generation',
             'is_damaged',
-            'is_repainted'
+            
         ]
 
         labels = {
