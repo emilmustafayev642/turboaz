@@ -225,16 +225,19 @@
 
         
 
-        <div class="all-button-wrapper">
+        <div class="elan-form-actions">
             <button class="all_button" type="submit">Elani yerlesdir</button>
             {% if listing %}
                 <button
-                    class="all_button delete-listing-button"
+                    class="delete-listing-button"
                     type="submit"
                     formaction="{% url 'delete_listing' listing.id %}"
                     formmethod="post"
+                    formnovalidate
                     onclick="return confirm('Bu elanı silmək istədiyinizə əminsiniz?')"
-                >Elanı sil</button>
+                >
+                    <i class="fa-solid fa-trash"></i> Elanı sil
+                </button>
             {% endif %}
         </div>
 
