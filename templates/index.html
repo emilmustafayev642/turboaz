@@ -146,32 +146,35 @@
          
 
                 <div class="gen-dropdown-wrapper">
-                    
-                    <select name="generation" id="generation-select" disabled>
-                        <option value="">Əvvəlcə model seçin (Nəsil ✨)</option>
-                        {% for gen in generations %}
-                            <option value="{{ gen.id }}" data-model="{{ gen.model.id }}" style="display: none;">
-                                {{ gen.name }} ({{ gen.year_start }} - {{ gen.year_end }})
-                            </option>
-                        {% endfor %}
-                    </select>
+                    <div class="filter-box feature-generation-highlight" onclick="toggleGenDropdown(event)" style="cursor: pointer;">
+                        <span id="selected-generation-label">Nəsil (YENİ ✨)</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
 
-                    <!-- Всплывающее окно с фото-карточками поколений -->
-                     <div class="gen-dropdown-menu" id="genDropdownMenu" onclick="event.stopPropagation()">
-                        <div class="generation-cards-grid" id="index-generations-grid">
-                            {% for gen in generations %}
-                                <label class="gen-card" data-model-name="{{ gen.car_model.name }}" onclick="selectGenCard('{{ gen.name|escapejs }}')">
-                                    <input type="radio" name="generation" value="{{ gen.id }}"
-                                        {% if request.GET.generation == gen.id|stringformat:"i" %}checked{% endif %}>
-                                    <div class="gen-card-overlay">
-                                        <span class="gen-radio-circle"></span>
-                                        <span class="gen-card-title">{{ gen.name }}</span>
-                                    </div>
-                                    {% if gen.image %}
-                                        <img src="{{ gen.image.url }}" alt="{{ gen.name }}">
-                                    {% endif %}
-                                </label>
-                            {% endfor %}
+                    <!-- pokoleyi hissesi  -->
+                    <div class="gen-dropdown-wrapper">
+                        <div class="filter-box feature-generation-highlight" onclick="toggleGenDropdown(event)">
+                            <span id="selected-generation-label">Nəsil (YENİ ✨)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+
+                        <div class="gen-dropdown-menu" id="genDropdownMenu" onclick="event.stopPropagation()">
+                            <p id="gen-empty-msg">Əvvəlcə marka və model seçin</p>
+                            <div class="generation-cards-grid" id="index-generations-grid">
+                                {% for gen in generations %}
+                                    <label class="gen-card" data-model-name="{{ gen.car_model.name }}" onclick="selectGenCard('{{ gen.name|escapejs }}')">
+                                        <input type="radio" name="generation" value="{{ gen.id }}"
+                                            {% if request.GET.generation == gen.id|stringformat:"i" %}checked{% endif %}>
+                                        <div class="gen-card-overlay">
+                                            <span class="gen-radio-circle"></span>
+                                            <span class="gen-card-title">{{ gen.name }}</span>
+                                        </div>
+                                        {% if gen.image %}
+                                            <img src="{{ gen.image.url }}" alt="{{ gen.name }}">
+                                        {% endif %}
+                                    </label>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                     

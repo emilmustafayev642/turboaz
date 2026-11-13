@@ -51,7 +51,9 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    margin-top: 8px;
+    width: 100%;
 }
 
 .filter-box {
@@ -71,13 +73,7 @@
     box-sizing: border-box;
 }
 
-.all-button-wrapper {
-    margin-top: 12px !important;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    width: 100%;
-}
+
 
 .filter-box span {
     display: inline-block;
@@ -215,6 +211,11 @@
 }
 
 /* nesile style veririk */
+.gen-dropdown-wrapper {
+    position: relative;
+    width: 100%;
+}
+
 .feature-generation-highlight {
     border: 2px solid #ef4444 !important;
     border-radius: 14px !important;     
@@ -223,11 +224,12 @@
     align-items: center !important;
     justify-content: center !important;
     gap: 10px !important;                      
-    grid-column: 1 / -1 !important;       
-    width: 320px !important;             
-    margin: 4px auto 0 auto !important;       
+    width: 100% !important;
+    min-height: 48px !important;
+    margin: 0 !important;       
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .feature-generation-highlight:hover {
@@ -258,11 +260,9 @@
     transform: translateY(-2px);
 }
 
-
 .gen-card input[type="radio"] {
     display: none;
 }
-
 
 .gen-card img {
     width: 100%;
@@ -270,7 +270,6 @@
     object-fit: cover;
     display: block;
 }
-
 
 .gen-card-overlay {
     position: absolute;
@@ -305,7 +304,6 @@
     transition: background 0.15s ease;
 }
 
-
 .gen-card-title {
     color: #ffffff;
     font-weight: 700;
@@ -313,7 +311,6 @@
     line-height: 1.25;
     text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
-
 
 .gen-card:has(input[type="radio"]:checked) {
     border-color: #3b82f6;
@@ -329,16 +326,12 @@
     background: #3b82f6;
 }
 
-
-.gen-dropdown-wrapper {
-    position: relative;
-}
-
 .gen-dropdown-menu {
     display: none;
     position: absolute;
     top: calc(100% + 8px);
-    left: 0;
+    right: 0;
+    left: auto;
     z-index: 999;
     background: #ffffff;
     padding: 16px;
@@ -353,11 +346,14 @@
     display: block;
 }
 
-
-/* car sectionuna gore cardla rburda  */
-
-
-
+#gen-empty-msg {
+    display: none;
+    margin: 8px 16px;
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: center;
+}
 .card:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
