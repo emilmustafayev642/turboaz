@@ -15,6 +15,14 @@ footer {
     border: 1px solid #edf0f4;
     border-radius: 20px;
     padding: 36px;
+}
+
+.delete-listing-button {
+    background-color: #64748b;
+}
+
+.delete-listing-button:hover {
+    background-color: #475569;
     width: min(100% - 32px, 640px);
     margin: 40px auto;
     box-sizing: border-box;

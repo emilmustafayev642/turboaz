@@ -225,7 +225,18 @@
 
         
 
-        <button style="margin-top: 10px;" class="all_button" type="submit">Elani yerlesdir</button>
+        <div class="all-button-wrapper">
+            <button class="all_button" type="submit">Elani yerlesdir</button>
+            {% if listing %}
+                <button
+                    class="all_button delete-listing-button"
+                    type="submit"
+                    formaction="{% url 'delete_listing' listing.id %}"
+                    formmethod="post"
+                    onclick="return confirm('Bu elanı silmək istədiyinizə əminsiniz?')"
+                >Elanı sil</button>
+            {% endif %}
+        </div>
 
         </form>
 
