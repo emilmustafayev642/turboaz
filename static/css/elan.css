@@ -15,19 +15,46 @@ footer {
     border: 1px solid #edf0f4;
     border-radius: 20px;
     padding: 36px;
-}
-
-.delete-listing-button {
-    background-color: #64748b;
-}
-
-.delete-listing-button:hover {
-    background-color: #475569;
     width: min(100% - 32px, 640px);
     margin: 40px auto;
     box-sizing: border-box;
     background: #fff;
     box-shadow: 0 12px 36px rgba(30, 41, 59, 0.06);
+}
+
+.elan-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.elan-form-actions .all_button {
+    grid-column: auto;
+    margin: 0;
+}
+
+.delete-listing-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #fff1f2;
+    color: #dc2626;
+    border: 1.5px solid #dc2626;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-listing-button:hover {
+    background-color: #dc2626;
+    color: #ffffff;
 }
 
 .elan-form-actions {
