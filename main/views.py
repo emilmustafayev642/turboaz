@@ -99,10 +99,6 @@ def home(request):
     })
     
 
-   
-
-
-
 
 
 def login_view(request):
@@ -538,3 +534,18 @@ def chat_room_view(request, conversation_id=None):
         'messages_list': messages_list,
         'other_user': other_user,
     })
+
+from django.contrib.auth.decorators import login_required
+
+# bu hissede seller of masini sold out kimi gostere biler
+
+@login_required
+def delete_car(request, pk):
+    car = get_object_or_404(Car, pk=pk)  # Change 'Car' to your listing model name if different 
+    
+    # check olunu: ancaq seller
+    if car.user == request.user and request.method == 'POST': 
+        car.delete()
+        return redirect('index') 
+        
+    return redirect('car_detail', pk=pk)  

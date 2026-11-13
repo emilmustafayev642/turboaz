@@ -377,6 +377,15 @@
                     <i class="fa-solid fa-pen-to-square mr-2"></i> Elanı redaktə et (Qiyməti dəyiş)
                 </a>
             {% endif %}
+
+            {% if request.user == car.user %}
+                <form method="POST" action="{% url 'delete_car' car.id %}" class="delete-listing-form" onsubmit="return confirm('Bu elanı silmək istədiyinizə əminsiniz?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete-listing">
+                        <i class="fa-solid fa-trash"></i> Elanı sil (Satıldı)
+                    </button>
+                </form>
+            {% endif %}
         </div>
     </aside>
     
