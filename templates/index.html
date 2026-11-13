@@ -146,10 +146,15 @@
          
 
                 <div class="gen-dropdown-wrapper">
-                    <div class="filter-box feature-generation-highlight" onclick="toggleGenDropdown(event)" style="cursor: pointer;">
-                        <span id="selected-generation-label">Nəsil (YENİ ✨)</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
+                    
+                    <select name="generation" id="generation-select" disabled>
+                        <option value="">Əvvəlcə model seçin (Nəsil ✨)</option>
+                        {% for gen in generations %}
+                            <option value="{{ gen.id }}" data-model="{{ gen.model.id }}" style="display: none;">
+                                {{ gen.name }} ({{ gen.year_start }} - {{ gen.year_end }})
+                            </option>
+                        {% endfor %}
+                    </select>
 
                     <!-- Всплывающее окно с фото-карточками поколений -->
                      <div class="gen-dropdown-menu" id="genDropdownMenu" onclick="event.stopPropagation()">

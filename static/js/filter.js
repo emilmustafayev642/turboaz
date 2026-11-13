@@ -66,3 +66,53 @@ resetButton.addEventListener('click', function(event) {
     event.preventDefault();
     window.location.assign(resetButton.form.action);
 });
+
+// bu kod ancaq secil secilen nesil gosterilecel
+
+document.addEventListener("DOMContentLoaded", function () {
+    const modelSelect = document.querySelector('select[name="model"]'); 
+    const genSelect = document.getElementById('generation-select');
+    const genOptions = genSelect.querySelectorAll('option[data-model]');
+
+    function updateGenerations() {
+        const selectedModelId = modelSelect.value;
+        
+        // ereset 
+        if (!selectedModelId) {
+            genSelect.value = "";
+            genSelect.disabled = true;
+            genSelect.options[0].textContent = "Əvvəlcə model seçin (Nəsil ✨)";
+            genOptions.forEach(opt => opt.style.display = "none");
+            return;
+        }
+
+        let matchCount = 0;
+        genOptions.forEach(opt => {
+            if (opt.getAttribute('data-model') === selectedModelId) {
+                opt.style.display = "block";
+                matchCount++;
+            } else {
+                opt.style.display = "none";
+            }
+        });
+
+        if (matchCount > 0) {
+            genSelect.disabled = false;
+            genSelect.options[0].textContent = "Nəsil (YENİ ✨)";
+        } else {
+            // 
+            genSelect.value = "";
+            genSelect.disabled = true;
+            genSelect.options[0].textContent = "Nəsil yoxdur";
+        }
+    }
+
+    if (modelSelect && genSelect) {
+        modelSelect.addEventListener('change', function () {
+            genSelect.value = "";
+            updateGenerations();
+        });
+        // bidende tun olacaq 
+        updateGenerations();
+    }
+});
