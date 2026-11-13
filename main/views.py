@@ -99,7 +99,7 @@ def home(request):
     })
     
 
-   
+
 
 
 def login_view(request):
@@ -409,7 +409,12 @@ def edit_listing_view(request, listing_id):
         messages.error(request, 'Bu elanı redaktə etməyə icazəniz yoxdur.')
         return redirect('detail', listing_id=listing.id)
 
+    if request.method == 'POST' and 'delete_listing' in request.POST:
+        listing.delete()
+        return redirect('index')  # Or '/' if your homepage URL name isn't 'index'
+
     if request.method == 'POST':
+        
         form = ListingForm(request.POST, request.FILES, instance=listing)
         if form.is_valid():
             # qiymet deyisilemde django basada saxlayir 
@@ -420,6 +425,8 @@ def edit_listing_view(request, listing_id):
         form = ListingForm(instance=listing)
 
     generations = CarGeneration.objects.select_related('car_model__brand').all()
+
+
 
     context = {
         'form': form,
