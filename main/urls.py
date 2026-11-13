@@ -18,4 +18,5 @@ urlpatterns = [
     path('listing/<int:listing_id>/chat/', views.start_or_open_chat, name='start_chat'),
     path('chat/<int:conversation_id>/', views.chat_room_view, name='chat_room'),
     path('chat/', views.chat_room_view, name='chat_inbox'),
+    path('listing/<int:pk>/delete/', views.delete_listing, name='delete_listing'),
 ]

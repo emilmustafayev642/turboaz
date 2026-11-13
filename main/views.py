@@ -497,6 +497,7 @@ def start_or_open_chat(request, listing_id):
 
 @login_required(login_url='login')
 def chat_room_view(request, conversation_id=None):
+
     # userin biutun fialona baxiriq
     conversations = Conversation.objects.filter(
         Q(buyer=request.user) | Q(seller=request.user)
@@ -542,3 +543,11 @@ def chat_room_view(request, conversation_id=None):
         'messages_list': messages_list,
         'other_user': other_user,
     })
+
+@login_required
+def delete_listing(request, pk):
+    listing = get_object_or_404(Listing, pk=pk)
+    if request.method == 'POST':
+        listing.delete()
+        return redirect('/')
+    return redirect('/')
