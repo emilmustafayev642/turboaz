@@ -166,6 +166,6 @@ class RegistrationForm(UserCreationForm):
         return email
 
         
-# this part was hart bro it required some rearching
+
 
 

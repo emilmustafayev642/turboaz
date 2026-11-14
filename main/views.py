@@ -98,10 +98,6 @@ def home(request):
         'pinned_ids': pinned_ids,
     })
     
-
-
-
-
 def login_view(request):
     post_data = request.POST.copy() if request.method == 'POST' else None
 
@@ -126,8 +122,6 @@ def login_view(request):
 
     next_url = request.POST.get('next') or request.GET.get('next', '')
     return render(request, 'login.html', {'form': form, 'next': next_url})
-
-    
 
 def register_view(request):
     form = RegistrationForm(request.POST or None)
@@ -162,7 +156,6 @@ def register_view(request):
         return redirect('verify_email')
 
     return render(request, 'register.html', {'form': form})
-
 
 def verify_email_view(request):
     user_id = request.session.get('pending_verification_user_id')
@@ -356,9 +349,7 @@ def elan_view(request):
 def toggle_pin_view(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
 
-    # get_or_create работает как переключатель (ВКЛ/ВЫКЛ):
-    # Если записи нет — создаст её и вернет created = True.
-    # Если запись уже есть — просто достанет её и вернет created = False.
+    # get_or_create pereklucatelkimi islemeldi :
     pin, created = PinnedListing.objects.get_or_create(
         user=request.user,
         listing=listing,
@@ -440,7 +431,7 @@ def edit_listing_view(request, listing_id):
 def start_or_open_chat(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
 
-    # Очищаем старые накопленные сообщения, чтобы не было дублей
+   
     storage = get_messages(request)
     storage.used = True
 

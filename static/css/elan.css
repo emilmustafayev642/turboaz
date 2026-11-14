@@ -223,7 +223,7 @@ footer {
     border-color: #cbd5e1;
 }
 
-/* cтиль выбранный карты (при клике) Думаю, это работает так. */
+/* cтиль выбранный карты (при клике) Думаю это работает так */
 .category-card input[type="radio"]:checked + label {
     border-color: #ca1016; 
     background-color: #fff;
@@ -239,7 +239,7 @@ footer {
     transform: scale(0.98);
 }
 
-/* Custom Input Boxes for Marka / Model */
+
 .custom-input-box {
     background: #f8fafc;
     border: 1px solid #e2e8f0;

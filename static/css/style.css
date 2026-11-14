@@ -182,7 +182,7 @@
 }
 
 #hard-reset-btn {
-    grid-column: auto !important; /* Убираем растягивание на всю сетку */
+    grid-column: auto !important; 
     width: auto !important;
     flex: 0 0 auto !important;
     padding: 12px 16px !important;
@@ -385,14 +385,14 @@
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     padding: 0 20px;
-    width: 100%; /* Обязательно на всю ширину экрана! */
-    max-width: 1400px; /* Чтобы на огромных мониторах не растягивалось слишком сильно */
-    margin: 0 auto; /* Центрируем всю сетку */
+    width: 100%; 
+    max-width: 1400px;
+    margin: 0 auto; 
 }
 
 .card {
-    position: relative; /* Здесь мы добавили relative для нашего желтого пина со звездой! */
-    width: 100% !important; /* Убираем фиксированные 18rem от Bootstrap */
+    position: relative; 
+    width: 100% !important; 
     border: none !important;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -400,7 +400,7 @@
     overflow: hidden; 
     display: flex;
     flex-direction: column;
-    margin-left: 0 !important; /* Убираем старый отступ слева, если он мешал */
+    margin-left: 0 !important;
 }
 
 .listing-card-link,
