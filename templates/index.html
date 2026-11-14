@@ -102,14 +102,34 @@
                 <!-- FILTERS OLACAQ BURDA -->
 
                 <div class="filter-box">
-                    <span id="selected-city-label">Seher</span>
+                    <span id="selected-city-label">
+                        {% if request.GET.city %}{{ request.GET.city }}{% else %}Seher{% endif %}
+                    </span>
                     <i class="fa-solid fa-chevron-down"></i>
-                    <select name="city" onchange="document.getElementById('selected-city-label').innerText = this.value">
-                        <option value="" selected>Butun Seherler</option>
-                        <option value="Baki">Baki</option>
-                        <option value="Gəncə">Gəncə</option>
-                        <option value="Sumqayit">Sumqayit</option>
-                        <option value="Şəki">Şəki</option>
+                    <select name="city" onchange="document.getElementById('selected-city-label').innerText = this.value || 'Seher'">
+                        <option value="" {% if not request.GET.city %}selected{% endif %}>Butun Seherler</option>
+                        <option value="Baki" {% if request.GET.city == 'Baki' %}selected{% endif %}>Baki</option>
+                        <option value="Gəncə" {% if request.GET.city == 'Gəncə' %}selected{% endif %}>Gəncə</option>
+                        <option value="Sumqayit" {% if request.GET.city == 'Sumqayit' %}selected{% endif %}>Sumqayit</option>
+                        <option value="Xırdalan" {% if request.GET.city == 'Xırdalan' %}selected{% endif %}>Xırdalan</option>
+                        <option value="Mingəçevir" {% if request.GET.city == 'Mingəçevir' %}selected{% endif %}>Mingəçevir</option>
+                        <option value="Naxçıvan" {% if request.GET.city == 'Naxçıvan' %}selected{% endif %}>Naxçıvan</option>
+                        <option value="Şəki" {% if request.GET.city == 'Şəki' %}selected{% endif %}>Şəki</option>
+                        <option value="Lənkəran" {% if request.GET.city == 'Lənkəran' %}selected{% endif %}>Lənkəran</option>
+                        <option value="Xacmaz" {% if request.GET.city == 'Xacmaz' %}selected{% endif %}>Xacmaz</option>
+                        <option value="Quba" {% if request.GET.city == 'Quba' %}selected{% endif %}>Quba</option>
+                        <option value="Qusar" {% if request.GET.city == 'Qusar' %}selected{% endif %}>Qusar</option>
+                        <option value="Şamaxı" {% if request.GET.city == 'Şamaxı' %}selected{% endif %}>Şamaxı</option>
+                        <option value="Qəbələ" {% if request.GET.city == 'Qəbələ' %}selected{% endif %}>Qəbələ</option>
+                        <option value="Zaqatala" {% if request.GET.city == 'Zaqatala' %}selected{% endif %}>Zaqatala</option>
+                        <option value="Bərdə" {% if request.GET.city == 'Bərdə' %}selected{% endif %}>Bərdə</option>
+                        <option value="Yevlax" {% if request.GET.city == 'Yevlax' %}selected{% endif %}>Yevlax</option>
+                        <option value="Şirvan" {% if request.GET.city == 'Şirvan' %}selected{% endif %}>Şirvan</option>
+                        <option value="Sabirabad" {% if request.GET.city == 'Sabirabad' %}selected{% endif %}>Sabirabad</option>
+                        <option value="Masallı" {% if request.GET.city == 'Masallı' %}selected{% endif %}>Masallı</option>
+                        <option value="Cəlilabad" {% if request.GET.city == 'Cəlilabad' %}selected{% endif %}>Cəlilabad</option>
+                        <option value="Şəmkir" {% if request.GET.city == 'Şəmkir' %}selected{% endif %}>Şəmkir</option>
+                        <option value="Qazax" {% if request.GET.city == 'Qazax' %}selected{% endif %}>Qazax</option>
                     </select>
                 </div>
 
