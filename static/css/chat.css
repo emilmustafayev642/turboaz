@@ -170,3 +170,130 @@ body {
     border-radius: 12px;
     margin-bottom: 14px;
 }
+
+
+@media (max-width: 1024px) {
+    .chat-app-container {
+        grid-template-columns: 260px 1fr;
+    }
+
+    .chat-info {
+        display: none;
+    }
+}
+
+
+@media (max-width: 768px) {
+    body {
+        height: 100dvh;
+        overflow-y: auto;
+    }
+
+    .chat-app-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100dvh - 60px);
+        overflow: hidden;
+    }
+
+   
+    .chat-sidebar {
+        flex: 0 0 auto;
+        max-height: 135px;
+        border-right: none;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .chat-sidebar-header {
+        padding: 8px 14px;
+        font-size: 0.95rem;
+    }
+
+    .conversation-list {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 6px 10px;
+        gap: 8px;
+    }
+
+    .conversation-item {
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #f8fafc;
+        min-width: 170px;
+        max-width: 210px;
+    }
+
+    .conversation-item.active {
+        border-color: #ca1016;
+        background: #fff1f2;
+    }
+
+    .conversation-item img {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+    }
+
+    .conv-name {
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .conv-car {
+        font-size: 0.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+   
+    .chat-main {
+        flex: 1;
+        min-height: 0;
+        border-right: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-main-header {
+        height: 52px;
+        padding: 0 14px;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 14px;
+        overflow-y: auto;
+    }
+
+    .msg-bubble {
+        max-width: 82%;
+        padding: 9px 13px;
+        font-size: 0.88rem;
+    }
+
+    .chat-input-bar {
+        padding: 10px 12px;
+        flex-shrink: 0;
+    }
+
+    .chat-input-bar input {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+
+    .chat-input-bar button {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+}

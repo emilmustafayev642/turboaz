@@ -386,23 +386,111 @@ footer {
     margin-left: 12px;
 }
 
-@media (max-width: 600px) {
-    .details {
-        padding: 20px;
+
+@media (max-width: 992px) {
+    .layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-left: 0;
+        padding: 0 14px;
+        box-sizing: border-box;
     }
 
-    .specs {
-        grid-template-columns: 1fr;
-        gap: 10px;
+    .h2 {
+        margin-left: 14px !important;
+        margin-right: 14px !important;
+        font-size: 1.45rem;
+    }
+
+    .back {
+        display: inline-block;
+        margin-left: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .layout {
+        padding: 0 10px;
+        gap: 14px;
+    }
+
+    .h2 {
+        font-size: 1.25rem;
+        margin-left: 12px !important;
+    }
+
+    .span_N7 {
+        display: inline-block;
+        margin-left: 0;
+        margin-top: 4px;
+        font-size: 0.82rem;
     }
 
     .main-image {
-        height: 280px;
+        height: 250px;
+    }
+
+    .thumbnails {
+        padding: 8px 10px;
     }
 
     .thumbnails img {
-        width: 90px;
-        height: 65px;
-        flex-basis: 90px;
+        width: 85px;
+        height: 62px;
+        flex: 0 0 85px;
+    }
+
+    .details {
+        padding: 16px;
+    }
+
+    .details h3 {
+        font-size: 1.15rem;
+        margin-bottom: 12px;
+    }
+
+   
+    .specs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .specs > div {
+        padding: 10px 12px;
+    }
+
+    .spec-label {
+        font-size: 0.75rem;
+        margin-bottom: 2px;
+    }
+
+    .spec-value {
+        font-size: 0.9rem;
+    }
+
+    .condition-spec-row {
+        font-size: 0.9rem;
+        padding: 8px 0;
+    }
+
+    .seller {
+        padding: 16px;
+    }
+
+    .seller .price {
+        font-size: 1.65rem;
+        padding-bottom: 12px;
+    }
+
+    /* pin compare bir yerde saxlayiriq telefonda */
+    .action-buttons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .action-buttons .btn-action {
+        font-size: 0.82rem;
+        padding: 8px 10px;
+        min-height: 44px;
     }
 }

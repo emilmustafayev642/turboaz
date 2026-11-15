@@ -265,10 +265,21 @@ def detail_view(request, listing_id):
         pk=listing_id,
     )
 
-    listing.views_count += 1
-    listing.save(update_fields=['views_count'])
+    # 1. BAXIS SAYI (1 User = 1 View)
+    if request.user.is_authenticated:
+        if not listing.viewed_by.filter(id=request.user.id).exists():
+            listing.viewed_by.add(request.user)
+            listing.views_count += 1
+            listing.save(update_fields=['views_count'])
+    else:
+        viewed_cars = request.session.get('viewed_cars', [])
+        if listing.id not in viewed_cars:
+            listing.views_count += 1
+            listing.save(update_fields=['views_count'])
+            viewed_cars.append(listing.id)
+            request.session['viewed_cars'] = viewed_cars
 
-    # loqika qiymet dusmek 
+    # 2. LOQIKA QIYMET DUSMEK
     pin_obj = None
     price_drop = None
     if request.user.is_authenticated:
@@ -276,8 +287,7 @@ def detail_view(request, listing_id):
         if pin_obj and listing.price < pin_obj.initial_price:
             price_drop = pin_obj.initial_price - listing.price
 
-    # muwaise 
-
+    # 3. MUQAYISE
     compare_ids = request.session.get('compare_ids', [])
     in_compare = listing.id in compare_ids
 

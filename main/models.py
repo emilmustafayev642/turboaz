@@ -94,6 +94,8 @@ class Listing(models.Model):
     ]
 
     views_count = models.PositiveIntegerField(default=0)
+    views_count = models.PositiveIntegerField(default=0)
+    viewed_by = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='viewed_listings')
 
     generation = models.ForeignKey(
         'CarGeneration',

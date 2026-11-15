@@ -94,11 +94,7 @@
     padding: 0;
 }
 
-@media (min-width: 768px) {
-    .login-form-column {
-        transform: translateY(-135px);
-    }
-}
+
 
 /* AND ENDS HERE */
 
@@ -112,4 +108,28 @@
     opacity: 1;
     transition: opacity 350ms ease-in-out;
 }
+
+@media (max-width: 767px) {
+    .navbar-logo {
+        margin-left: 1rem;
+        margin-top: 1rem;
+        width: 105px;
+    }
+
+    .h1 {
+        margin-top: 20px;
+        font-size: 1.65rem;
+    }
+
+    .login-form {
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .login-car-image {
+        display: none;
+    }
+}
+
+
 
