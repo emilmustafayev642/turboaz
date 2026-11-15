@@ -57,7 +57,7 @@ class Listing(models.Model):
     ]
 
     BODY_TYPE_CHOICES = [
-        # Для Minik (Легковые)
+        
         ('sedan', 'Sedan'),
         ('hatchback', 'Hetçbek'),
         ('suv', 'SUV / Offroader'),
@@ -67,7 +67,7 @@ class Listing(models.Model):
         ('minivan', 'Minivan'),
         ('cabriolet', 'Kabriolet'),
         
-        # Для Kommersiya (Коммерческие — точь-в-точь как на твоем скриншоте)
+        
         ('avtokran', 'Avtokran'),
         ('soyuduculu_furqon', 'Soyuduculu furqon'),
         ('qolfkar', 'Qolfkar'),
@@ -212,7 +212,7 @@ class PinnedListing(models.Model):
         related_name='pins',
     )
 
-    # Burda masinin qiymeti saxlayiriq 67 pin knopkasina basanda!!
+    # Burda masinin qiymeti saxlayiriq pin knopkasina basanda!!
 
     initial_price = models.DecimalField(max_digits=12, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
