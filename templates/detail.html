@@ -166,39 +166,68 @@
                     <input type="number" name="min_price" placeholder="Qiymet, min" class="filter-input">
                     <input type="number" name="max_price" placeholder="maks" class="filter-input border-left">
                 </div>
+
+                <!-- indi men responsibil qiymet sistemini yixmaqa baslayiram bu DIV academiyadan SONRA 15/11/26 22:18 -->
+
+                <div class="filter-box">
+                    <span id="selected-sort-label">
+                        {% if request.GET.sort == 'price' %}Ən ucuzlar
+                        {% elif request.GET.sort == '-price' %}Ən bahalılar
+                        {% elif request.GET.sort == 'mileage' %}Yürüşü az olanlar
+                        {% elif request.GET.sort == '-created_at' %}Ən yenilər
+                        {% else %}Çeşidləmə{% endif %}
+                    </span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                    <select name="sort" onchange="document.getElementById('selected-sort-label').innerText = this.options[this.selectedIndex].text">
+                        <option value="-created_at" {% if request.GET.sort == '-created_at' or not request.GET.sort %}selected{% endif %}>Ən yenilər</option>
+                        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Ən ucuzlar</option>
+                        <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Ən bahalılar</option>
+                        <option value="mileage" {% if request.GET.sort == 'mileage' %}selected{% endif %}>Yürüşü az olanlar</option>
+                    </select>
+                </div>
          
 
-                <div class="gen-dropdown-wrapper">
-                    <div class="filter-box" onclick="toggleGenDropdown(event)" style="cursor: pointer;">
-                        <span id="selected-generation-label">Nəsil</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
+               
 
-                    <!-- Всплывающее окно с фото-карточками поколений -->
-                    <div class="gen-dropdown-menu" id="genDropdownMenu" onclick="event.stopPropagation()">
-                        <div class="generation-cards-grid" id="index-generations-grid">
-                            {% for gen in generations %}
-                                <label class="gen-card" data-model-name="{{ gen.car_model.name }}" onclick="selectGenCard('{{ gen.name|escapejs }}')">
-                                    <input type="radio" name="generation" value="{{ gen.id }}"
-                                        {% if request.GET.generation == gen.id|stringformat:"i" %}checked{% endif %}>
-                                    <div class="gen-card-overlay">
-                                        <span class="gen-radio-circle"></span>
-                                        <span class="gen-card-title">{{ gen.name }}</span>
-                                    </div>
-                                    {% if gen.image %}
-                                        <img src="{{ gen.image.url }}" alt="{{ gen.name }}">
-                                    {% endif %}
-                                </label>
-                            {% endfor %}
+                    <!-- pokoleyi hissesi  -->
+                    <div class="gen-dropdown-wrapper">
+                        <div class="filter-box feature-generation-highlight" onclick="toggleGenDropdown(event)">
+                            <span id="selected-generation-label">Nəsil (YENİ ✨)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
                         </div>
+
+                        <div class="gen-dropdown-menu" id="genDropdownMenu" onclick="event.stopPropagation()">
+                            <p id="gen-empty-msg">Əvvəlcə marka və model seçin</p>
+                            <div class="generation-cards-grid" id="index-generations-grid">
+                                {% for gen in generations %}
+                                    <label class="gen-card" data-model-name="{{ gen.car_model.name }}" onclick="selectGenCard('{{ gen.name|escapejs }}')">
+                                        <input type="radio" name="generation" value="{{ gen.id }}"
+                                            {% if request.GET.generation == gen.id|stringformat:"i" %}checked{% endif %}>
+                                        <div class="gen-card-overlay">
+                                            <span class="gen-radio-circle"></span>
+                                            <span class="gen-card-title">{{ gen.name }}</span>
+                                        </div>
+                                        {% if gen.image %}
+                                            <img src="{{ gen.image.url }}" alt="{{ gen.name }}">
+                                        {% endif %}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                        
                     </div>
                 </div>
             
-               
-
                 <div class="all-button-wrapper">
+                    <button type="reset" id="hard-reset-btn" class="btn btn-light" title="Bütün filtrləri sıfırla">
+                        <i class="fa-solid fa-rotate-left"></i> Sıfırla
+                    </button>
                     <button type="submit" class="all_button">Elanlari Goster</button>
                 </div>
+
+                
 
                 </div>
             </form>
