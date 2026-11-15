@@ -82,6 +82,16 @@ def home(request):
     }
     generations = CarGeneration.objects.select_related('car_model__brand').all()
 
+    sort_by = request.GET.get('sort', '-id')
+    allowed_sorts = {
+        'price': 'price',
+        '-price': '-price',
+        'mileage': 'mileage',
+        '-created_at': '-id',  # '-id' always puts the newest cars first!
+    }
+    if sort_by in allowed_sorts:
+        listings = listings.order_by(allowed_sorts[sort_by])
+
 
     # yansi masini user pin eliyib
     pinned_ids = []
@@ -254,6 +264,9 @@ def detail_view(request, listing_id):
         Listing.objects.select_related('car_model__brand').prefetch_related('photos'),
         pk=listing_id,
     )
+
+    listing.views_count += 1
+    listing.save(update_fields=['views_count'])
 
     # loqika qiymet dusmek 
     pin_obj = None

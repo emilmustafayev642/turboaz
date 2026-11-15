@@ -93,6 +93,8 @@ class Listing(models.Model):
         ('gas', 'Qaz'),
     ]
 
+    views_count = models.PositiveIntegerField(default=0)
+
     generation = models.ForeignKey(
         'CarGeneration',
         on_delete=models.SET_NULL,

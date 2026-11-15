@@ -525,3 +525,110 @@
     transform: translateY(1px);
     box-shadow: 0 1px 2px rgba(202, 16, 22, 0.1);
 }
+
+/* indi men responsibil mobile sehifeni yixmaqa baslayiram bu DIV academiyadan SONRA 15/11/26 22:40 */
+
+
+/* tabletler ve orta manitorlar 1000pxasagi  */
+@media (max-width: 992px) {
+    .filter-controls {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+    }
+
+    .gen-dropdown-menu {
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .generation-cards-grid {
+        justify-content: center;
+    }
+}
+
+/* mobile telefonlar hardasa 600 px asagi  */
+
+@media (max-width: 600px) {
+    .navbar-logo {
+        width: 100px;
+    }
+
+    .auth-buttons {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-apex,
+    .btn-apex-outline {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.82rem;
+    }
+
+    .filter-panel {
+        padding: 18px 10px 24px;
+    }
+
+    .filter-controls {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        width: 100%;
+    }
+
+    /* На малых экранах переключатель статуса и блоки с ценой занимают всю ширину rus dilinde yazdim bilmirem yine */
+
+    .status-group,
+    .filter-box.price-range-box {
+        grid-column: 1 / -1;
+    }
+
+    .filter-box {
+        min-height: 44px;
+        font-size: 0.85rem;
+        padding: 0 10px;
+    }
+
+    .gen-card {
+        width: 100%;
+        height: 130px;
+    }
+
+    /* telfonlarda 2 sütunlu avtomobil kartları */
+    .listing-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    .card-img-top {
+        height: 135px;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+    }
+
+    .card-text.cars {
+        font-size: 0.72rem;
+        padding: 4px 8px;
+        margin-bottom: 12px;
+    }
+
+    .card-body p {
+        font-size: 0.68rem;
+    }
+
+    .h1 {
+        font-size: 1.35rem;
+        margin-left: 12px;
+        margin-top: 16px;
+        margin-bottom: 14px;
+    }
+}

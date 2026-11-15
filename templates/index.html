@@ -163,6 +163,25 @@
                     <input type="number" name="min_price" placeholder="Qiymet, min" class="filter-input">
                     <input type="number" name="max_price" placeholder="maks" class="filter-input border-left">
                 </div>
+
+                <!-- indi men responsibil qiymet sistemini yixmaqa baslayiram bu DIV academiyadan SONRA 15/11/26 22:18 -->
+
+                <div class="filter-box">
+                    <span id="selected-sort-label">
+                        {% if request.GET.sort == 'price' %}Ən ucuzlar
+                        {% elif request.GET.sort == '-price' %}Ən bahalılar
+                        {% elif request.GET.sort == 'mileage' %}Yürüşü az olanlar
+                        {% elif request.GET.sort == '-created_at' %}Ən yenilər
+                        {% else %}Çeşidləmə{% endif %}
+                    </span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                    <select name="sort" onchange="document.getElementById('selected-sort-label').innerText = this.options[this.selectedIndex].text">
+                        <option value="-created_at" {% if request.GET.sort == '-created_at' or not request.GET.sort %}selected{% endif %}>Ən yenilər</option>
+                        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Ən ucuzlar</option>
+                        <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Ən bahalılar</option>
+                        <option value="mileage" {% if request.GET.sort == 'mileage' %}selected{% endif %}>Yürüşü az olanlar</option>
+                    </select>
+                </div>
          
 
                
