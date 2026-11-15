@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-&hema&z12**yo1i(um_h9#fmx0^13^o0cg6of#74oryg4#u%2m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -118,9 +118,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -135,16 +138,12 @@ EMAIL_HOST_USER = 'emil.mustafayev2026@gmail.com'
 EMAIL_HOST_PASSWORD = 'juoi jyqp hzuo hljo'
 DEFAULT_FROM_EMAIL = 'APEX <emil.mustafayev2026@gmail.com>'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
-# 2. Выключи Secure-флаг для локального тестирования по HTTP:
 CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
+    'https://*.pythonanywhere.com',
 ]
 
 # Default primary key field type
