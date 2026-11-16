@@ -310,7 +310,7 @@ def detail_view(request, listing_id):
         is_deleted=False
     ).exclude(pk=listing.pk)
 
-    # Fallback: If no other cars of this exact model exist yet, compare with cars of a similar year!
+    
     if not similar_cars.exists():
         similar_cars = Listing.objects.filter(
             year__gte=listing.year - 3,
@@ -318,7 +318,7 @@ def detail_view(request, listing_id):
             is_deleted=False
         ).exclude(pk=listing.pk)
 
-    # Second Fallback: If still none, compare with all other active cars on the site
+    
     if not similar_cars.exists():
         similar_cars = Listing.objects.filter(is_deleted=False).exclude(pk=listing.pk)
 
@@ -331,11 +331,11 @@ def detail_view(request, listing_id):
         avg_price = round(avg_price)
         price_diff = abs(round(listing.price - avg_price))
         if listing.price < avg_price * Decimal('0.92'):
-            price_status = 'good'      # 8%+ cheaper than market
+            price_status = 'good'      
         elif listing.price > avg_price * Decimal('1.08'):
-            price_status = 'high'      # 8%+ more expensive than market
+            price_status = 'high'      
         else:
-            price_status = 'normal'    # Fair market price
+            price_status = 'normal'   
 
     return render(request, 'detail.html', {
         'listing': listing,
