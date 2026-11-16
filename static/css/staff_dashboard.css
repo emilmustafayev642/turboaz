@@ -469,11 +469,27 @@
     display: inline-flex;
 }
 
+.navbar-collapse {
+    display: flex !important;
+    align-items: center !important;
+}
+
 .staff-nav-btn {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    padding: 9px 18px !important;
+    margin: 0 14px 0 auto !important;
     background: #fff1f2 !important;
     border: 1.5px solid #ca1016 !important;
+    border-radius: 10px !important;
     color: #ca1016 !important;
     font-weight: 700 !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
 }
 
 .staff-nav-btn:hover {

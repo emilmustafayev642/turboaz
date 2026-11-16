@@ -26,12 +26,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        {% if user_role in 'moderator,admin,superadmin' %}
-        <a href="{% url 'staff_dashboard' %}" class="btn btn-apex-outline staff-nav-btn">
-            <i class="fa-solid fa-shield-halved"></i> Staff Panel
-        </a>
-        {% endif %}
         
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
@@ -39,6 +35,12 @@
                     <a href="{% url 'profile' %}" class="btn btn-apex-outline" aria-label="My profile">
                         <i class="fa-solid fa-user"></i> {{ user.username }}
                     </a>
+
+                    {% if user_role in 'moderator,admin,superadmin' %}
+                        <a href="{% url 'staff_dashboard' %}" class="btn btn-apex-outline staff-nav-btn">
+                            <i class="fa-solid fa-shield-halved"></i> Staff Panel
+                        </a>
+                    {% endif %}
 
                     <a href="{% url 'chat_inbox' %}" class="btn btn-apex-outline">
                         <i class="fa-solid fa-comment-dots"></i> Mesajlar
