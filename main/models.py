@@ -1,10 +1,7 @@
 from django.db import models
-
 from django.conf import settings
-
 from django.utils import timezone
 
-# Create your models here.
 
 class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -24,12 +21,14 @@ class Brand(models.Model):
     def __str__(self):
         return self.name
 
+
 class CarModel(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='models')
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return f"{self.brand.name} {self.name}"
+
 
 class CarGeneration(models.Model):
     car_model = models.ForeignKey(
@@ -40,15 +39,16 @@ class CarGeneration(models.Model):
     name = models.CharField(max_length=120)
     image = models.ImageField(upload_to='generations/', blank=True, null=True)
 
-
     def __str__(self):
         return f'{self.car_model.name} - {self.name}'
 
+
 class Year(models.Model):
     year = models.IntegerField(unique=True)
-    
+
     def __str__(self):
         return str(self.year)
+
 
 class Listing(models.Model):
     CONDITION_CHOICES = [
@@ -57,7 +57,6 @@ class Listing(models.Model):
     ]
 
     BODY_TYPE_CHOICES = [
-        
         ('sedan', 'Sedan'),
         ('hatchback', 'Hetçbek'),
         ('suv', 'SUV / Offroader'),
@@ -66,8 +65,6 @@ class Listing(models.Model):
         ('crossover', 'Krossover'),
         ('minivan', 'Minivan'),
         ('cabriolet', 'Kabriolet'),
-        
-        
         ('avtokran', 'Avtokran'),
         ('soyuduculu_furqon', 'Soyuduculu furqon'),
         ('qolfkar', 'Qolfkar'),
@@ -76,12 +73,9 @@ class Listing(models.Model):
         ('dartqi', 'Dartqı'),
         ('yuk_masini', 'Yük maşını'),
         ('furqon', 'Furqon'),
-        
-        # Для Moto
         ('sport', 'Sportbike'),
         ('cruiser', 'Kruizer'),
         ('scooter', 'Skuter'),
-        
         ('other', 'Digər'),
     ]
 
@@ -94,8 +88,19 @@ class Listing(models.Model):
     ]
 
     views_count = models.PositiveIntegerField(default=0)
-    views_count = models.PositiveIntegerField(default=0)
     viewed_by = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='viewed_listings')
+
+    is_verified = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+    deleted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='deleted_listings',
+    )
+    delete_reason = models.TextField(blank=True, null=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
 
     generation = models.ForeignKey(
         'CarGeneration',
@@ -110,8 +115,6 @@ class Listing(models.Model):
         on_delete=models.PROTECT,
         related_name='listings',
     )
-
-    # MEN INDI PROFILE EMAIL VERIFICATION YARATMAQA BASLAYIRAM 27/10/26  21:03
 
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -134,12 +137,9 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_damaged = models.BooleanField(default=False, verbose_name='Vurugu var')
     is_repainted = models.BooleanField(default=False, verbose_name="Rənglənib")
-    
-
 
     def __str__(self):
         return f'{self.car_model} {self.year}'
-
 
 
 class ListingPhoto(models.Model):
@@ -154,17 +154,42 @@ class ListingPhoto(models.Model):
         return f'Photo for {self.listing}'
 
 
+class ModerationLog(models.Model):
+    ACTION_CHOICES = [
+        ('delete', 'Elan silindi'),
+        ('verify', 'Elan təsdiqləndi'),
+        ('ban', 'İstifadəçi bloklandı'),
+    ]
+    staff_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    action = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    target_info = models.CharField(max_length=255)
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.staff_user.username} -> {self.action} ({self.target_info})"
+
 
 class Profile(models.Model):
+    ROLE_CHOICES = [
+        ('user', 'İstifadəçi (User)'),
+        ('dealer', 'Avtosalon (Verified Dealer)'),
+        ('moderator', 'Moderator'),
+        ('admin', 'Admin'),
+        ('superadmin', 'Superadmin'),
+    ]
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='profile',
     )
-    phone = models.CharField(max_length=30)
+    phone = models.CharField(max_length=30, blank=True, default='')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
 
     def __str__(self):
-        return f'{self.user.username} profile'
+        return f'{self.user.username} ({self.role})'
+
 
 class EmailVerification(models.Model):
     user = models.OneToOneField(
@@ -172,7 +197,6 @@ class EmailVerification(models.Model):
         on_delete=models.CASCADE,
         related_name='email_verification',
     )
-
     code_hash = models.CharField(max_length=128)
     sent_at = models.DateTimeField(default=timezone.now)
     attempts = models.PositiveSmallIntegerField(default=0)
@@ -185,23 +209,22 @@ class CarModelBodyType(models.Model):
         on_delete=models.CASCADE,
         related_name='body_type_options',
     )
-
     body_type = models.CharField(
         max_length=20,
         choices=Listing.BODY_TYPE_CHOICES,
     )
 
-
     class Meta:
-        constraints = [ 
+        constraints = [
             models.UniqueConstraint(
                 fields=['car_model', 'body_type'],
-                name='unique_body_type_per_car_model'
+                name='unique_body_type_per_car_model',
             ),
         ]
 
     def __str__(self):
         return f'{self.car_model} - {self.get_body_type_display()}'
+
 
 class PinnedListing(models.Model):
     user = models.ForeignKey(
@@ -209,15 +232,11 @@ class PinnedListing(models.Model):
         on_delete=models.CASCADE,
         related_name='pinned_listings',
     )
-    
     listing = models.ForeignKey(
         Listing,
         on_delete=models.CASCADE,
         related_name='pins',
     )
-
-    # Burda masinin qiymeti saxlayiriq pin knopkasina basanda!!
-
     initial_price = models.DecimalField(max_digits=12, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -232,7 +251,6 @@ class PinnedListing(models.Model):
     def __str__(self):
         return f'{self.user.username} pinned {self.listing}'
 
- # bura benim 04/11/26 seller and user danisma seyifesidi
 
 class Conversation(models.Model):
     listing = models.ForeignKey(
@@ -240,17 +258,11 @@ class Conversation(models.Model):
         on_delete=models.CASCADE,
         related_name='conversations',
     )
-
-    # buyer modeli conversation
-
     buyer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='buying_conversations',
     )
-
-    # seller burda
- 
     seller = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -259,15 +271,16 @@ class Conversation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-       constraints = [ 
+        constraints = [
             models.UniqueConstraint(
                 fields=['listing', 'buyer'],
-                name='unique_buyer_listing_conversation'
+                name='unique_buyer_listing_conversation',
             ),
         ]
 
     def __str__(self):
         return f'{self.buyer.username} -> {self.seller.username} ({self.listing})'
+
 
 class Message(models.Model):
     conversation = models.ForeignKey(
@@ -275,15 +288,11 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name='messages',
     )
-
-    # mesaji ginderen
-
     sender = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='sent_messages',
     )
-
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -292,6 +301,3 @@ class Message(models.Model):
 
     def __str__(self):
         return f'{self.sender.username}: {self.text[:30]}'
-
-
-

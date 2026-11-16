@@ -11,6 +11,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'image/favicon.png' %}?v=2">
     <link rel="stylesheet" href="{% static 'css/detail.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/staff_dashboard.css' %}">
     <title>Apex | Detail</title>
 </head>
 <body>
@@ -25,6 +26,12 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
+        {% if user_role in 'moderator,admin,superadmin' %}
+        <a href="{% url 'staff_dashboard' %}" class="btn btn-apex-outline staff-nav-btn">
+            <i class="fa-solid fa-shield-halved"></i> Staff Panel
+        </a>
+        {% endif %}
+        
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
@@ -244,6 +251,9 @@
     <h2 class="h2">
         {{ listing.car_model.brand.name }} {{ listing.car_model.name }},
         {{ listing.year }} il, {{ listing.mileage }} km
+        {% if listing.is_verified %}
+            <span class="mod-pill">✔ Yoxlanılıb</span>
+        {% endif %}
     </h2>
 
 <div class="layout">
@@ -429,6 +439,29 @@
                 <a href="{% url 'edit_listing' listing.id %}" class="btn btn-warning text-white font-weight-bold" style="background: #f59e0b; border-radius: 12px; padding: 14px;">
                     <i class="fa-solid fa-pen-to-square mr-2"></i> Elanı redaktə et (Qiyməti dəyiş)
                 </a>
+            {% endif %}
+
+            <!-- STAFF PANEL MODERATOR  ADMIN  SUPERADMIN QURURUQ -->
+            {% if user_role in 'moderator,admin,superadmin' %}
+            <div class="staff-panel-box">
+                <div class="staff-panel-header">
+                    <span class="staff-panel-badge">STAFF • {{ user_role|upper }}</span>
+                    <a href="{% url 'staff_dashboard' %}" class="staff-panel-link">Command Center →</a>
+                </div>
+
+                <form method="POST" action="{% url 'staff_verify_listing' listing.id %}" class="staff-verify-form">
+                    {% csrf_token %}
+                    <button type="submit" class="staff-btn-verify">
+                        {% if listing.is_verified %}✓ Təsdiqlənib (Ləğv et){% else %}🛡 Elanı Təsdiqlə (Verify){% endif %}
+                    </button>
+                </form>
+
+                <form method="POST" action="{% url 'staff_delete_listing' listing.id %}" onsubmit="return confirm('Bu elanı silmək istədiyinizə əminsiniz?');">
+                    {% csrf_token %}
+                    <textarea name="reason" required placeholder="Silmə səbəbini qeyd edin (məcburidir)..." class="staff-reason-input"></textarea>
+                    <button type="submit" class="staff-btn-delete">Sil və Arxivə Göndər</button>
+                </form>
+            </div>
             {% endif %}
 
             

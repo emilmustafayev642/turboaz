@@ -18,10 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from main import views
 
 urlpatterns = [
-   path('apex-emil-panel/', admin.site.urls),
+    path('apex-super-emil/', admin.site.urls),
     path('', include('main.urls')),
+    path('staff/dashboard/', views.staff_dashboard, name='staff_dashboard'),
+    path('staff/delete/<int:listing_id>/', views.staff_delete_listing, name='staff_delete_listing'),
+    path('staff/restore/<int:listing_id>/', views.staff_restore_listing, name='staff_restore_listing'),
+    path('staff/verify/<int:listing_id>/', views.staff_verify_listing, name='staff_verify_listing'),
     
 ]
 

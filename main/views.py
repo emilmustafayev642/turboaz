@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from .forms import ListingForm, RegistrationForm
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from .models import (
     Brand,
@@ -29,19 +30,24 @@ from .models import (
     Conversation,
     Message,
     CarGeneration,
-    
+    ModerationLog,
 )
 
 
+def get_user_role(user):
+    if not user.is_authenticated:
+        return 'guest'
+    if user.is_superuser:
+        return 'superadmin'
+    profile, _ = Profile.objects.get_or_create(user=user)
+    return profile.role
 
-# Create your views here
 
 def home(request):
-    listings = Listing.objects.select_related(
+    listings = Listing.objects.filter(is_deleted=False).select_related(
         'car_model__brand'
     ).order_by('-created_at')
 
-    # get den filtreleri yigirig
     brand = request.GET.get('brand')
     model = request.GET.get('model')
     condition = request.GET.get('condition')
@@ -53,7 +59,6 @@ def home(request):
     max_year = request.GET.get('max_year')
     generation_id = request.GET.get('generation')
 
-    # sira sira gedirik birinvi brand
     if brand:
         listings = listings.filter(car_model__brand__name=brand)
     if model:
@@ -87,13 +92,11 @@ def home(request):
         'price': 'price',
         '-price': '-price',
         'mileage': 'mileage',
-        '-created_at': '-id',  # '-id' always puts the newest cars first!
+        '-created_at': '-id',
     }
     if sort_by in allowed_sorts:
         listings = listings.order_by(allowed_sorts[sort_by])
 
-
-    # yansi masini user pin eliyib
     pinned_ids = []
     if request.user.is_authenticated:
         pinned_ids = list(
@@ -106,8 +109,10 @@ def home(request):
         'generations': generations,
         'listings': listings,
         'pinned_ids': pinned_ids,
+        'user_role': get_user_role(request.user),
     })
-    
+
+
 def login_view(request):
     post_data = request.POST.copy() if request.method == 'POST' else None
 
@@ -132,6 +137,7 @@ def login_view(request):
 
     next_url = request.POST.get('next') or request.GET.get('next', '')
     return render(request, 'login.html', {'form': form, 'next': next_url})
+
 
 def register_view(request):
     form = RegistrationForm(request.POST or None)
@@ -166,6 +172,7 @@ def register_view(request):
         return redirect('verify_email')
 
     return render(request, 'register.html', {'form': form})
+
 
 def verify_email_view(request):
     user_id = request.session.get('pending_verification_user_id')
@@ -247,10 +254,14 @@ def resend_verification_view(request):
 
     return redirect('verify_email')
 
+
 @login_required(login_url='login')
 def profile_view(request):
-    profile = Profile.objects.filter(user=request.user).first()
-    return render(request, 'profile.html', {'profile': profile})
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+    return render(request, 'profile.html', {
+        'profile': profile,
+        'user_role': get_user_role(request.user),
+    })
 
 
 @require_POST
@@ -298,10 +309,11 @@ def detail_view(request, listing_id):
         'price_drop': price_drop,
         'in_compare': in_compare,
         'compare_count': len(compare_ids),
+        'user_role': get_user_role(request.user),
     })
 
-@login_required(login_url='login')
 
+@login_required(login_url='login')
 def elan_view(request):
     brands = Brand.objects.prefetch_related('models').all()
 
@@ -372,14 +384,12 @@ def elan_view(request):
 def toggle_pin_view(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
 
-    # get_or_create pereklucatelkimi islemeldi :
     pin, created = PinnedListing.objects.get_or_create(
         user=request.user,
         listing=listing,
         defaults={'initial_price': listing.price},
     )
 
-    # pin varsa ve user ikincide pine basa onda pinned gedir
     if not created:
         pin.delete()
 
@@ -394,12 +404,10 @@ def toggle_compare_view(request, listing_id):
     if listing.id in compare_ids:
         compare_ids.remove(listing.id)
     else:
-        # burda iki masin varsa birini silir
         if len(compare_ids) >= 2:
             compare_ids.pop(0)
         compare_ids.append(listing.id)
 
-    # yadda saxlamaq 
     request.session['compare_ids'] = compare_ids
     return redirect('detail', listing_id=listing.id)
 
@@ -412,35 +420,26 @@ def compare_view(request):
     return render(request, 'compare.html', {'listings': listings_to_compare})
 
 
-# bu hissed seller masinin qiymetini deyise bilecek
-
 @login_required(login_url='login')
 def edit_listing_view(request, listing_id):
-    # make sure oliyirki 100% bu sellerdi
     listing = get_object_or_404(Listing, pk=listing_id)
-    
+
     if listing.owner != request.user:
         messages.error(request, 'Bu elanı redaktə etməyə icazəniz yoxdur.')
         return redirect('detail', listing_id=listing.id)
 
     if request.method == 'POST' and 'delete_listing' in request.POST:
         listing.delete()
-        return redirect('index')  # Or '/' if your homepage URL name isn't 'index'
+        return redirect('home')
 
     if request.method == 'POST':
-        
         form = ListingForm(request.POST, request.FILES, instance=listing)
         if form.is_valid():
-            # qiymet deyisilemde django basada saxlayir 
             form.save()
             messages.success(request, 'Elan uğurla yeniləndi!')
             return redirect('detail', listing_id=listing.id)
     else:
         form = ListingForm(instance=listing)
-
-    generations = CarGeneration.objects.select_related('car_model__brand').all()
-
-
 
     context = {
         'form': form,
@@ -448,13 +447,13 @@ def edit_listing_view(request, listing_id):
         'brands': Brand.objects.prefetch_related('models').all(),
         'years': list(Year.objects.order_by('-year').values_list('year', flat=True)),
     }
-    return render(request, 'elan.html', context) # eyni elan html formasini burda istid edirik nolar kod isle
+    return render(request, 'elan.html', context)
+
 
 @login_required(login_url='login')
 def start_or_open_chat(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
 
-   
     storage = get_messages(request)
     storage.used = True
 
@@ -472,47 +471,10 @@ def start_or_open_chat(request, listing_id):
         defaults={'seller': listing.owner},
     )
     return redirect('chat_room', conversation_id=conversation.id)
-    listing = get_object_or_404(Listing, pk=listing_id)
-
-    # If an old test car has no owner, attach it to another user or admin
-    if not listing.owner:
-        User = get_user_model()
-        fallback_seller = User.objects.exclude(pk=request.user.pk).first() or request.user
-        listing.owner = fallback_seller
-        listing.save(update_fields=['owner'])
-
-    if listing.owner == request.user:
-        messages.info(request, 'Öz elanınıza mesaj yaza bilməzsiniz. Başqa hesabla daxil olun.')
-        return redirect('detail', listing_id=listing.id)
-
-    conversation, _ = Conversation.objects.get_or_create(
-        listing=listing,
-        buyer=request.user,
-        defaults={'seller': listing.owner},
-    )
-    return redirect('chat_room', conversation_id=conversation.id)
-    listing = get_object_or_404(Listing, pk=listing_id)
-
-    if not listing.owner:
-        messages.error(request, 'Bu elanin saticisi yoxdur.')
-        return redirect('detail', listing_id=listing.id)
-
-    if listing.owner == request.user:
-        messages.info(request, 'Öz elaninizaza mesaj yaza bilməzsiz.')
-        return redirect('detail', listing_id=listing.id)
-
-    conversation, _ = Conversation.objects.get_or_create(
-        listing=listing,
-        buyer=request.user,
-        defaults={'seller': listing.owner},
-    )
-    return redirect('chat_room', conversation_id=conversation.id)
 
 
 @login_required(login_url='login')
 def chat_room_view(request, conversation_id=None):
-
-    # userin biutun fialona baxiriq
     conversations = Conversation.objects.filter(
         Q(buyer=request.user) | Q(seller=request.user)
     ).select_related('listing__car_model__brand', 'buyer', 'seller').order_by('-created_at')
@@ -527,7 +489,6 @@ def chat_room_view(request, conversation_id=None):
             pk=conversation_id,
         )
 
-        # proveka ki basqalarini catina girme
         if request.user not in (active_conversation.buyer, active_conversation.seller):
             return redirect('chat_inbox')
 
@@ -548,7 +509,6 @@ def chat_room_view(request, conversation_id=None):
             else active_conversation.buyer
         )
     elif conversations.exists():
-        # eger Id verilmetibse birinci dostup onali ac
         return redirect('chat_room', conversation_id=conversations.first().id)
 
     return render(request, 'chat.html', {
@@ -558,6 +518,7 @@ def chat_room_view(request, conversation_id=None):
         'other_user': other_user,
     })
 
+
 @login_required
 def delete_listing(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
@@ -565,3 +526,123 @@ def delete_listing(request, pk):
         listing.delete()
         return redirect('/')
     return redirect('/')
+
+
+
+# indi rollar elvae edirem moderator admin superadmin
+
+
+@login_required(login_url='login')
+@require_POST
+def staff_delete_listing(request, listing_id):
+    role = get_user_role(request.user)
+    if role not in ['moderator', 'admin', 'superadmin']:
+        messages.error(request, 'Bu əməliyyat üçün icazəniz yoxdur!')
+        return redirect('home')
+
+    listing = get_object_or_404(Listing, pk=listing_id)
+    reason = request.POST.get('reason', '').strip()
+
+    if not reason:
+        messages.error(request, 'Elanı silmək üçün mütləq səbəb yazmalısınız!')
+        return redirect('detail', listing_id=listing.id)
+
+    listing.is_deleted = True
+    listing.deleted_by = request.user
+    listing.delete_reason = reason
+    listing.deleted_at = timezone.now()
+    listing.save(update_fields=['is_deleted', 'deleted_by', 'delete_reason', 'deleted_at'])
+
+    owner_name = listing.owner.username if listing.owner else 'Naməlum'
+    ModerationLog.objects.create(
+        staff_user=request.user,
+        action='delete',
+        target_info=f"{listing.car_model} ({listing.price} AZN) - Sahibi: {owner_name}",
+        reason=reason,
+    )
+
+    messages.success(request, 'Elan silindi və Silinmiş Elanlar siyahısına əlavə olundu.')
+    return redirect('staff_dashboard')
+
+
+@login_required(login_url='login')
+@require_POST
+def staff_restore_listing(request, listing_id):
+    role = get_user_role(request.user)
+    if role not in ['admin', 'superadmin']:
+        messages.error(request, 'Elanı yalnız Admin və ya Superadmin bərpa edə bilər!')
+        return redirect('staff_dashboard')
+
+    listing = get_object_or_404(Listing, pk=listing_id)
+    listing.is_deleted = False
+    listing.deleted_by = None
+    listing.delete_reason = ''
+    listing.deleted_at = None
+    listing.save(update_fields=['is_deleted', 'deleted_by', 'delete_reason', 'deleted_at'])
+
+    messages.success(request, 'Elan yenidən saytda aktiv edildi!')
+    return redirect('staff_dashboard')
+
+
+@login_required(login_url='login')
+@require_POST
+def staff_verify_listing(request, listing_id):
+    role = get_user_role(request.user)
+    if role not in ['moderator', 'admin', 'superadmin']:
+        return redirect('home')
+
+    listing = get_object_or_404(Listing, pk=listing_id)
+    listing.is_verified = not listing.is_verified
+    listing.save(update_fields=['is_verified'])
+
+    ModerationLog.objects.create(
+        staff_user=request.user,
+        action='verify',
+        target_info=f"{listing.car_model} (ID: #{listing.id})",
+        reason='Elan yoxlanıldı və təsdiqləndi' if listing.is_verified else 'Təsdiq nişanı ləğv edildi',
+    )
+    return redirect('detail', listing_id=listing.id)
+
+
+@login_required(login_url='login')
+def staff_dashboard(request):
+    role = get_user_role(request.user)
+    if role not in ['moderator', 'admin', 'superadmin']:
+        return redirect('home')
+
+    if request.method == 'POST' and 'change_role' in request.POST and role == 'superadmin':
+        target_user = get_object_or_404(User, pk=request.POST.get('user_id'))
+        new_role = request.POST.get('new_role')
+        profile, _ = Profile.objects.get_or_create(user=target_user)
+        profile.role = new_role
+        profile.save()
+        messages.success(request, f"{target_user.username} istifadəçisinin rolu '{new_role}' olaraq dəyişdirildi!")
+        return redirect('staff_dashboard')
+
+    if request.method == 'POST' and 'toggle_ban' in request.POST and role in ['admin', 'superadmin']:
+        target_user = get_object_or_404(User, pk=request.POST.get('user_id'))
+        if not target_user.is_superuser:
+            target_user.is_active = not target_user.is_active
+            target_user.save(update_fields=['is_active'])
+            ModerationLog.objects.create(
+                staff_user=request.user,
+                action='ban',
+                target_info=target_user.username,
+                reason=request.POST.get('ban_reason', 'Qayda pozuntusu'),
+            )
+            messages.success(request, f"{target_user.username} statusu yeniləndi.")
+        return redirect('staff_dashboard')
+
+    deleted_listings = Listing.objects.filter(is_deleted=True).select_related(
+        'car_model__brand', 'owner', 'deleted_by'
+    ).order_by('-deleted_at')
+
+    logs = ModerationLog.objects.select_related('staff_user').order_by('-created_at')[:50]
+    users = User.objects.select_related('profile').all() if role in ['admin', 'superadmin'] else []
+
+    return render(request, 'staff_dashboard.html', {
+        'user_role': role,
+        'deleted_listings': deleted_listings,
+        'logs': logs,
+        'users': users,
+    })

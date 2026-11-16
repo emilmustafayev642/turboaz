@@ -19,4 +19,8 @@ urlpatterns = [
     path('chat/<int:conversation_id>/', views.chat_room_view, name='chat_room'),
     path('chat/', views.chat_room_view, name='chat_inbox'),
     path('listing/<int:pk>/delete/', views.delete_listing, name='delete_listing'),
+    path('staff/dashboard/', views.staff_dashboard, name='staff_dashboard'),
+    path('staff/delete/<int:listing_id>/', views.staff_delete_listing, name='staff_delete_listing'),
+    path('staff/restore/<int:listing_id>/', views.staff_restore_listing, name='staff_restore_listing'),
+    path('staff/verify/<int:listing_id>/', views.staff_verify_listing, name='staff_verify_listing'),
 ]

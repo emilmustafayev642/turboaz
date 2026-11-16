@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import Brand, CarModel, Year, Listing, Profile, EmailVerification, CarModelBodyType, CarGeneration
+from .models import Brand, CarModel, Year, Listing, Profile, EmailVerification, CarModelBodyType, CarGeneration, ModerationLog
 admin.site.site_header = "Apex Administration"
 admin.site.site_title = "Apex Admin Portal"
 admin.site.index_title = "Welcome to Apex Management"
@@ -28,4 +28,12 @@ admin.site.register(EmailVerification)
 admin.site.register(CarModelBodyType)
 admin.site.register(CarGeneration)
 admin.site.unregister(Group)
+admin.site.register(ModerationLog)
+
+from .models import ModerationLog
+
+class ModerationLogAdmin(admin.ModelAdmin):
+    list_display = ('staff_user', 'action', 'target_info', 'reason', 'created_at')
+    list_filter = ('action', 'created_at')
+    search_fields = ('staff_user__username', 'target_info', 'reason')
 
