@@ -496,3 +496,179 @@
     background: #ca1016 !important;
     color: #ffffff !important;
 }
+
+/* ==========================================
+   DESKTOP NAVBAR ALIGNMENT (992px and up)
+   ========================================== */
+@media (min-width: 992px) {
+    .navbar-collapse {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .auth-buttons {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end;
+        gap: 12px !important;
+        margin-left: auto;
+    }
+
+    .auth-buttons .btn,
+    .auth-buttons a,
+    .auth-buttons button {
+        width: auto !important;
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 9px 16px !important;
+        margin: 0 !important;
+        border-radius: 10px !important;
+    }
+
+    .auth-buttons form {
+        margin: 0 !important;
+        width: auto !important;
+        display: inline-flex;
+    }
+
+    .staff-nav-btn {
+        margin-right: 6px !important;
+    }
+}
+
+.staff-nav-btn {
+    background: #fff1f2 !important;
+    border: 1.5px solid #ca1016 !important;
+    color: #ca1016 !important;
+    font-weight: 700 !important;
+}
+
+.staff-nav-btn:hover {
+    background: #ca1016 !important;
+    color: #ffffff !important;
+}
+
+
+@media (max-width: 991px) {
+    /* 1. Stack Navbar Buttons Cleanly on Mobile */
+    .auth-buttons {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+        padding-top: 12px;
+    }
+
+    .auth-buttons .btn,
+    .auth-buttons a,
+    .auth-buttons button,
+    .auth-buttons form {
+        width: 100% !important;
+        margin: 0 !important;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    /* 2. Staff Dashboard Mobile Layout */
+    .staff-body {
+        padding: 12px 10px;
+    }
+
+    .top-bar {
+        padding: 16px;
+        border-radius: 14px;
+        margin-bottom: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .top-bar h1 {
+        font-size: 1.15rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .card-box {
+        padding: 14px;
+        border-radius: 14px;
+        margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+        font-size: 1.02rem;
+    }
+
+    /* 3. Convert Wide Tables into Stacked Mobile Cards */
+    .staff-table {
+        min-width: 100% !important;
+        display: block;
+    }
+
+    .staff-table thead {
+        display: none;
+    }
+
+    .staff-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .staff-table tbody tr {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #f8fafc;
+    }
+
+    .staff-table td {
+        border: none !important;
+        padding: 2px 0 !important;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+
+    .car-thumb {
+        width: 100%;
+        height: 150px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+    }
+
+    .reason-pill {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .role-form {
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .role-select {
+        flex: 1;
+    }
+
+    .btn-sm {
+        padding: 10px 14px;
+    }
+
+    .btn-ban,
+    .btn-restore {
+        width: 100%;
+        text-align: center;
+    }
+}
