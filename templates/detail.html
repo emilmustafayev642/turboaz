@@ -358,9 +358,34 @@
 
     <aside>
         <div class="seller">
-            <div class="seller-name">Satıcı: <strong>{{ listing.owner.username }}</strong></div>
+            <div class="seller-name">
+                Satıcı: 
+                <a href="{% url 'seller_listings' listing.owner.username %}" class="seller-link">
+                    <strong>{{ listing.owner.username }}</strong>
+                </a>
+                {% if listing.owner.profile.role == 'dealer' %}
+                    <span class="dealer-badge">✔ Rəsmi Avtosalon</span>
+                {% endif %}
+            </div>
+
             <div class="price">{{ listing.price }} AZN</div>
             <div class="azn"></div>
+
+            <!-- bu hissede masinin qiymetinin bazar qiymetinden asagi ve ya yugari olan qiymeti gosterir -->
+
+            {% if price_status == 'good' %}
+                <div class="market-badge market-good">
+                    🟢 Əla qiymət! (Orta qiymətdən {{ price_diff }} AZN ucuz)
+                </div>
+            {% elif price_status == 'normal' %}
+                <div class="market-badge market-normal">
+                    🔵 Normal bazar qiyməti (Orta: {{ avg_price }} AZN)
+                </div>
+            {% elif price_status == 'high' %}
+                <div class="market-badge market-high">
+                    🟠 Yüksək qiymət (Orta qiymətdən {{ price_diff }} AZN baha)
+                </div>
+            {% endif %}
 
             <!-- 1. Блок отслеживания цены -->
             {% if is_pinned %}

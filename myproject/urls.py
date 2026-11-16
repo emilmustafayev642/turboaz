@@ -27,6 +27,7 @@ urlpatterns = [
     path('staff/delete/<int:listing_id>/', views.staff_delete_listing, name='staff_delete_listing'),
     path('staff/restore/<int:listing_id>/', views.staff_restore_listing, name='staff_restore_listing'),
     path('staff/verify/<int:listing_id>/', views.staff_verify_listing, name='staff_verify_listing'),
+    path('seller/<str:username>/', views.seller_listings_view, name='seller_listings'),
     
 ]
 

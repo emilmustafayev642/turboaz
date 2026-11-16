@@ -672,3 +672,46 @@
         text-align: center;
     }
 }
+
+/* Market Price Analyzer Badges */
+.market-badge {
+    margin: 8px 0 12px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+.market-good {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #15803d;
+}
+.market-normal {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+}
+.market-high {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #c2410c;
+}
+
+/* Avtosalon Badge & Seller Link */
+.seller-link {
+    color: #0f172a;
+    text-decoration: underline;
+}
+.seller-link:hover {
+    color: #ca1016;
+}
+.dealer-badge {
+    display: inline-block;
+    margin-left: 6px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 999px;
+}

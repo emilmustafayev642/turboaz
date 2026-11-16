@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Avg
 import secrets
 from datetime import timedelta
 from django.contrib import messages
@@ -16,6 +16,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from .forms import ListingForm, RegistrationForm
 from django.conf import settings
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 from .models import (
     Brand,
@@ -302,6 +303,27 @@ def detail_view(request, listing_id):
     compare_ids = request.session.get('compare_ids', [])
     in_compare = listing.id in compare_ids
 
+
+    # 4. QIYMET ANALIZI (Market Price Analyzer)
+    avg_price_data = Listing.objects.filter(
+        car_model=listing.car_model,
+        is_deleted=False
+    ).aggregate(avg_p=Avg('price'))
+    
+    avg_price = avg_price_data['avg_p']
+    price_status = None
+    price_diff = 0
+
+    if avg_price and listing.price:
+        avg_price = round(avg_price)
+        price_diff = abs(round(listing.price - avg_price))
+        if listing.price < avg_price * Decimal('0.92'):
+            price_status = 'good'      # 8%+ cheaper than average
+        elif listing.price > avg_price * Decimal('1.08'):
+            price_status = 'high'      # 8%+ more expensive than average
+        else:
+            price_status = 'normal'    # Fair market price
+
     return render(request, 'detail.html', {
         'listing': listing,
         'is_pinned': pin_obj is not None,
@@ -310,6 +332,7 @@ def detail_view(request, listing_id):
         'in_compare': in_compare,
         'compare_count': len(compare_ids),
         'user_role': get_user_role(request.user),
+        'avg_price': avg_price, 'price_status': price_status, 'price_diff': price_diff,
     })
 
 
@@ -645,4 +668,20 @@ def staff_dashboard(request):
         'deleted_listings': deleted_listings,
         'logs': logs,
         'users': users,
+    })
+
+    # biz nidi seller badge elave iderik 18/11/26
+
+def seller_listings_view(request, username):
+    seller = get_object_or_404(User.objects.select_related('profile'), username=username)
+    listings = Listing.objects.filter(owner=seller, is_deleted=False).select_related(
+        'car_model__brand'
+    ).order_by('-created_at')
+
+    return render(request, 'index.html', {
+        'listings': listings,
+        'brands': Brand.objects.prefetch_related('models').all(),
+        'generations': CarGeneration.objects.select_related('car_model__brand').all(),
+        'user_role': get_user_role(request.user),
+        'selected_seller': seller,
     })
