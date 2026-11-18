@@ -150,15 +150,13 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-
-
-is_pythonanywhere = 'pythonanywhere.com' in os.environ.get('HOSTNAME', '') or 'emilmustafayev' in str(BASE_DIR)
-
-if is_pythonanywhere:
-    # Use local disk storage on PythonAnywhere free tier to prevent connection blocks
+# Check if we are running locally or on PythonAnywhere
+# (PythonAnywhere environment paths always contain your username)
+if 'emilmustafayev' in os.environ.get('HOME', ''):
+    # PythonAnywhere Free Tier: Use local file storage to avoid API connection blocks
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 else:
-    # Use Cloudinary when running locally on your MacBook
+    # Local MacBook Development: Use Cloudinary CDN
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': 'gpls4dls',
         'API_KEY': '711457276496351',
