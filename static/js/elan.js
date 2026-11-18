@@ -327,76 +327,76 @@ filterElanGenerations();
 
 // secilen sekilleri live de gosterir ve fayli kompress eliyir 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const fileInputs = document.querySelectorAll('input[type="file"]');
+// document.addEventListener('DOMContentLoaded', function () {
+//     const fileInputs = document.querySelectorAll('input[type="file"]');
 
-    fileInputs.forEach(input => {
-        // 1. Force phone/Mac to open the visual Photo Gallery directly
-        input.setAttribute('accept', 'image/*');
+//     fileInputs.forEach(input => {
+//         // 1. Force phone/Mac to open the visual Photo Gallery directly
+//         input.setAttribute('accept', 'image/*');
 
-        // 2. Create a visual thumbnail preview container right under the file input
-        const previewBox = document.createElement('div');
-        previewBox.style.cssText = 'display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;';
-        input.parentNode.insertBefore(previewBox, input.nextSibling);
+//         // 2. Create a visual thumbnail preview container right under the file input
+//         const previewBox = document.createElement('div');
+//         previewBox.style.cssText = 'display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;';
+//         input.parentNode.insertBefore(previewBox, input.nextSibling);
 
-        input.addEventListener('change', async function (e) {
-            const files = Array.from(e.target.files);
-            if (!files.length) return;
+//         input.addEventListener('change', async function (e) {
+//             const files = Array.from(e.target.files);
+//             if (!files.length) return;
 
-            previewBox.innerHTML = '<span style="font-size:0.85rem; color:#64748b;">Şəkillər hazırlanır...</span>';
-            const dataTransfer = new DataTransfer();
-            const previews = [];
+//             previewBox.innerHTML = '<span style="font-size:0.85rem; color:#64748b;">Şəkillər hazırlanır...</span>';
+//             const dataTransfer = new DataTransfer();
+//             const previews = [];
 
-            for (const file of files) {
-                if (!file.type.startsWith('image/')) {
-                    dataTransfer.items.add(file);
-                    continue;
-                }
-                const compressedFile = await compressInBrowser(file, 1200, 0.8);
-                dataTransfer.items.add(compressedFile);
+//             for (const file of files) {
+//                 if (!file.type.startsWith('image/')) {
+//                     dataTransfer.items.add(file);
+//                     continue;
+//                 }
+//                 const compressedFile = await compressInBrowser(file, 1200, 0.8);
+//                 dataTransfer.items.add(compressedFile);
 
-                // Build visual thumbnail preview
-                const imgUrl = URL.createObjectURL(compressedFile);
-                previews.push(`<img src="${imgUrl}" style="width:90px; height:68px; object-fit:cover; border-radius:8px; border:1px solid #cbd5e1; box-shadow:0 2px 5px rgba(0,0,0,0.08);">`);
-            }
+//                 // Build visual thumbnail preview
+//                 const imgUrl = URL.createObjectURL(compressedFile);
+//                 previews.push(`<img src="${imgUrl}" style="width:90px; height:68px; object-fit:cover; border-radius:8px; border:1px solid #cbd5e1; box-shadow:0 2px 5px rgba(0,0,0,0.08);">`);
+//             }
 
-            // Replace heavy 5MB files in the input with fast 100KB WebP files
-            input.files = dataTransfer.files;
-            previewBox.innerHTML = previews.join('');
-        });
-    });
+//             // Replace heavy 5MB files in the input with fast 100KB WebP files
+//             input.files = dataTransfer.files;
+//             previewBox.innerHTML = previews.join('');
+//         });
+//     });
 
-    function compressInBrowser(file, maxWidth, quality) {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > maxWidth) {
-                        height = Math.round((height * maxWidth) / width);
-                        width = maxWidth;
-                    }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
+//     function compressInBrowser(file, maxWidth, quality) {
+//         return new Promise((resolve) => {
+//             const reader = new FileReader();
+//             reader.readAsDataURL(file);
+//             reader.onload = (event) => {
+//                 const img = new Image();
+//                 img.src = event.target.result;
+//                 img.onload = () => {
+//                     let width = img.width;
+//                     let height = img.height;
+//                     if (width > maxWidth) {
+//                         height = Math.round((height * maxWidth) / width);
+//                         width = maxWidth;
+//                     }
+//                     const canvas = document.createElement('canvas');
+//                     canvas.width = width;
+//                     canvas.height = height;
+//                     const ctx = canvas.getContext('2d');
+//                     ctx.drawImage(img, 0, 0, width, height);
 
-                    canvas.toBlob((blob) => {
-                        if (!blob) return resolve(file);
-                        const newName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
-                        const newFile = new File([blob], newName, {
-                            type: 'image/webp',
-                            lastModified: Date.now()
-                        });
-                        resolve(newFile);
-                    }, 'image/webp', quality);
-                };
-            };
-        });
-    }
-});
+//                     canvas.toBlob((blob) => {
+//                         if (!blob) return resolve(file);
+//                         const newName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+//                         const newFile = new File([blob], newName, {
+//                             type: 'image/webp',
+//                             lastModified: Date.now()
+//                         });
+//                         resolve(newFile);
+//                     }, 'image/webp', quality);
+//                 };
+//             };
+//         });
+//     }
+// });
