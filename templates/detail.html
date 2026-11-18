@@ -420,7 +420,7 @@
             
             {% if user.is_authenticated and listing.owner == user %}
                 <a href="{% url 'chat_inbox' %}" class="btn message" style="background: #64748b;">
-                    ✉ Gələn mesajlara bax (Sizin elaniniz)
+                    ✉ Gelen mesajlara bax (Sizin elaniniz)
                 </a>
             {% else %}
                 <a href="{% url 'start_chat' listing.id %}" class="btn message">
