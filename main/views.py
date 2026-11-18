@@ -309,8 +309,7 @@ def detail_view(request, listing_id):
         car_model=listing.car_model,
         is_deleted=False
     ).exclude(pk=listing.pk)
-
-    
+   
     if not similar_cars.exists():
         similar_cars = Listing.objects.filter(
             year__gte=listing.year - 3,

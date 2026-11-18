@@ -41,8 +41,6 @@ class CarGeneration(models.Model):
     def __str__(self):
         return f'{self.car_model.name} - {self.name}'
 
-    
-
 
 class Year(models.Model):
     year = models.IntegerField(unique=True)
