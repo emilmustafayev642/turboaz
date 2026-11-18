@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 
 import os
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -149,20 +150,25 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-import cloudinary
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'gpls4dls',
-    'API_KEY': '711457276496351',
-    'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
-   'PREFIX': '',
-}
 
-cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
-    api_key=CLOUDINARY_STORAGE['API_KEY'],
-    api_secret=CLOUDINARY_STORAGE['API_SECRET'],
-    secure=True,
-)
+if is_pythonanywhere:
+    # PythonAnywhere free tier blocks external APIs, so use local disk storage here
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+else:
+    # Use Cloudinary when running locally on your MacBook
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': 'gpls4dls',
+        'API_KEY': '711457276496351',
+        'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
+        'PREFIX': '',
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    cloudinary.config(
+        cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+        api_key=CLOUDINARY_STORAGE['API_KEY'],
+        api_secret=CLOUDINARY_STORAGE['API_SECRET'],
+        secure=True,
+    )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
