@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
     'main',
 ]
 
@@ -148,21 +147,4 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.pythonanywhere.com',
 ]
 
-
-import os
-
-# Check if we are running on PythonAnywhere
-is_pythonanywhere = 'pythonanywhere.com' in os.environ.get('HOSTNAME', '') or os.path.exists('/home/emilmustafayev')
-
-if is_pythonanywhere:
-    # Use local server storage on PythonAnywhere free tier
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-else:
-    # Use Cloudinary when testing locally on your MacBook
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': 'gpls4dls',
-        'API_KEY': '711457276496351',
-        'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
-        'PREFIX': '',
-    }
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
