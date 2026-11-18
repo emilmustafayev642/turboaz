@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'main',
 ]
 
@@ -146,7 +148,20 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.pythonanywhere.com',
 ]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+import cloudinary
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'gpls4dls',
+    'API_KEY': '711457276496351',
+    'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
+}
+
+cloudinary.config(
+    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+    api_key=CLOUDINARY_STORAGE['API_KEY'],
+    api_secret=CLOUDINARY_STORAGE['API_SECRET'],
+    secure=True,
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
