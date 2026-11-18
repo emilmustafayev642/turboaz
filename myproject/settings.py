@@ -155,6 +155,7 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'gpls4dls',
     'API_KEY': '711457276496351',
     'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
+    PREFIX': '',
 }
 
 cloudinary.config(
