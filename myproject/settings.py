@@ -150,25 +150,12 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-# Check if we are running locally or on PythonAnywhere
-# (PythonAnywhere environment paths always contain your username)
-if 'emilmustafayev' in os.environ.get('HOME', ''):
-    # PythonAnywhere Free Tier: Use local file storage to avoid API connection blocks
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-else:
-    # Local MacBook Development: Use Cloudinary CDN
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': 'gpls4dls',
-        'API_KEY': '711457276496351',
-        'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
-        'PREFIX': '',
-    }
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    cloudinary.config(
-        cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
-        api_key=CLOUDINARY_STORAGE['API_KEY'],
-        api_secret=CLOUDINARY_STORAGE['API_SECRET'],
-        secure=True,
-    )
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'gpls4dls',
+    'API_KEY': '711457276496351',
+    'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
+    'PREFIX': '',
+}
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
