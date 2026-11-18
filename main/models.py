@@ -2,6 +2,29 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
+from io import BytesIO
+from PIL import Image
+from django.core.files.base import ContentFile
+
+
+# bu kod sekili convert eliyirki kohne telefonlarda sehife tez islesin
+
+def compress_image(image_field, max_width=1200):
+    if not image_field:
+        return image_field
+    img = Image.open(image_field)
+    if img.mode in ('RGBA', 'P'):
+        img = img.convert('RGB')
+    if img.width > max_width:
+        ratio = max_width / float(img.width)
+        new_height = int(float(img.height) * ratio)
+        img = img.resize((max_width, new_height), Image.Resampling.LANCZOS)
+    output = BytesIO()
+    img.save(output, format='WEBP', quality=80, optimize=True)
+    output.seek(0)
+    filename = image_field.name.rsplit('.', 1)[0] + '.webp'
+    return ContentFile(output.read(), name=filename)
+
 
 class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -41,6 +64,11 @@ class CarGeneration(models.Model):
 
     def __str__(self):
         return f'{self.car_model.name} - {self.name}'
+
+    def save(self, *args, **kwargs):
+        if self.image and not self.image.name.lower().endswith('.webp'):
+            self.image = compress_image(self.image, max_width=800)
+        super().save(*args, **kwargs)
 
 
 class Year(models.Model):
@@ -141,6 +169,11 @@ class Listing(models.Model):
     def __str__(self):
         return f'{self.car_model} {self.year}'
 
+    def save(self, *args, **kwargs):
+        if self.image and not self.image.name.lower().endswith('.webp'):
+            self.image = compress_image(self.image, max_width=1200)
+        super().save(*args, **kwargs)
+
 
 class ListingPhoto(models.Model):
     listing = models.ForeignKey(
@@ -168,6 +201,11 @@ class ModerationLog(models.Model):
 
     def __str__(self):
         return f"{self.staff_user.username} -> {self.action} ({self.target_info})"
+    
+    def save(self, *args, **kwargs):
+        if self.image and not self.image.name.lower().endswith('.webp'):
+            self.image = compress_image(self.image, max_width=1200)
+        super().save(*args, **kwargs)
 
 
 class Profile(models.Model):
