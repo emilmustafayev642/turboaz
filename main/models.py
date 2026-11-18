@@ -18,13 +18,12 @@ def compress_image(image_field, max_width=1200):
     if img.width > max_width:
         ratio = max_width / float(img.width)
         new_height = int(float(img.height) * ratio)
-        img = img.resize((max_width, new_height), Image.Resampling.LANCZOS)
+        img = img.resize((max_width, new_height), Image.Resampling.BILINEAR)
     output = BytesIO()
-    img.save(output, format='WEBP', quality=80, optimize=True)
+    img.save(output, format='WEBP', quality=78)
     output.seek(0)
     filename = image_field.name.rsplit('.', 1)[0] + '.webp'
     return ContentFile(output.read(), name=filename)
-
 
 class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
