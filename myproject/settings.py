@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-import os
-import cloudinary
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -150,12 +149,20 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'gpls4dls',
-    'API_KEY': '711457276496351',
-    'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
-    'PREFIX': '',
-}
+import os
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Check if we are running on PythonAnywhere
+is_pythonanywhere = 'pythonanywhere.com' in os.environ.get('HOSTNAME', '') or os.path.exists('/home/emilmustafayev')
 
+if is_pythonanywhere:
+    # Use local server storage on PythonAnywhere free tier
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+else:
+    # Use Cloudinary when testing locally on your MacBook
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': 'gpls4dls',
+        'API_KEY': '711457276496351',
+        'API_SECRET': 'smUuJOK7siMdsnoqleEulylpiaw',
+        'PREFIX': '',
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
