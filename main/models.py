@@ -123,6 +123,7 @@ class Listing(models.Model):
         related_name='listings',
     )
 
+
     year = models.PositiveSmallIntegerField()
     condition = models.CharField(max_length=10, choices=CONDITION_CHOICES)
     body_type = models.CharField(max_length=20, choices=BODY_TYPE_CHOICES)
@@ -141,8 +142,6 @@ class Listing(models.Model):
         return f'{self.car_model} {self.year}'
 
     
-
-
 class ListingPhoto(models.Model):
     listing = models.ForeignKey(
         Listing,
