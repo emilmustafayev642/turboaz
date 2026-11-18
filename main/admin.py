@@ -32,6 +32,7 @@ admin.site.register(ModerationLog)
 
 from .models import ModerationLog
 
+# moderation changes have been place last week and I am having daily check on them to make sure everything is working properly !
 class ModerationLogAdmin(admin.ModelAdmin):
     list_display = ('staff_user', 'action', 'target_info', 'reason', 'created_at')
     list_filter = ('action', 'created_at')
