@@ -152,8 +152,10 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 
+is_pythonanywhere = 'pythonanywhere.com' in os.environ.get('HOSTNAME', '') or 'emilmustafayev' in str(BASE_DIR)
+
 if is_pythonanywhere:
-    # PythonAnywhere free tier blocks external APIs, so use local disk storage here
+    # Use local disk storage on PythonAnywhere free tier to prevent connection blocks
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 else:
     # Use Cloudinary when running locally on your MacBook
