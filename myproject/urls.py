@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
+from django.views.static import serve
 from django.conf.urls.static import static
 from main import views
 
@@ -28,6 +29,7 @@ urlpatterns = [
     path('staff/restore/<int:listing_id>/', views.staff_restore_listing, name='staff_restore_listing'),
     path('staff/verify/<int:listing_id>/', views.staff_verify_listing, name='staff_verify_listing'),
     path('seller/<str:username>/', views.seller_listings_view, name='seller_listings'),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     
 ]
 
