@@ -17,6 +17,15 @@
     border-radius: 12px;
     margin-bottom: 12px;
 }
+
+.compare-table img {
+    width: 100%;
+    max-width: 320px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
 th, td {
     padding: 18px 24px !important;
     vertical-align: middle !important;
