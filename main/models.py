@@ -59,7 +59,7 @@ class Listing(models.Model):
         ('sedan', 'Sedan'),
         ('hatchback', 'Hetçbek'),
         ('suv', 'SUV / Offroader'),
-        ('wagon', 'Wagon')
+        ('wagon', 'Wagon'),
         ('coupe', 'Kupe'),
         ('universal', 'Universal'),
         ('crossover', 'Krossover'),
